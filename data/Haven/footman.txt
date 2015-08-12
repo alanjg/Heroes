@@ -1,0 +1,11 @@
+{
+	"Name": "Footman",
+	"Alias": "Worker",
+	"Size": 1.0,
+	"Speed": 1.0,
+	"Attack": 2,
+	"Defense": 3,
+	"HitPoints": 15,
+	"Cost": { "Gold": 100 },
+	"BuildTime": 20
+}

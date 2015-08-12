@@ -1,0 +1,11 @@
+{
+	"Name": "Demon",
+	"Alias": "Worker",
+	"Size": 0.8,
+	"Speed": 1.4,
+	"Attack": 2,
+	"Defense": 2,
+	"HitPoints": 10,
+	"Cost": { "Gold": 80 },
+	"BuildTime": 16
+}

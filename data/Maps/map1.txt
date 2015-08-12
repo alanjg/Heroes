@@ -1,0 +1,117 @@
+{
+	"Name": "Map1",
+	"Width": 32,
+	"Height": 32,
+	"MaxPlayers": 2,
+	"PlayerStartLocations": [
+		{
+			"CellX": 4,
+			"CellY": 4,
+			"Entities": [
+				{
+					"Alias": "Town Hall",
+					"X": 4,
+					"Y": 4
+				},
+				{
+					"Alias": "Worker",
+					"X": 4,
+					"Y": 3
+				}
+			]
+		},
+		{
+			"CellX": 28,
+			"CellY": 28,
+			"Entities": [
+				{
+					"Alias": "Town Hall",
+					"X": 28,
+					"Y": 28
+				},
+				{
+					"Alias": "Worker",
+					"X": 28,
+					"Y": 27
+				}
+			]
+		},
+		{
+			"CellX": 28,
+			"CellY": 4,
+			"Entities": [
+				{
+					"Alias": "Town Hall",
+					"X": 28,
+					"Y": 4
+				},
+				{
+					"Alias": "Worker",
+					"X": 28,
+					"Y": 3
+				}
+			]
+		},
+		{
+			"CellX": 4,
+			"CellY": 28,
+			"Entities": [
+				{
+					"Alias": "Town Hall",
+					"X": 4,
+					"Y": 28
+				},
+				{
+					"Alias": "Worker",
+					"X": 4,
+					"Y": 27
+				}
+			]
+		}
+	],
+	"BlockedCells": [ { "X": 0, "Y":0}],
+	"Scenery": [
+		{
+			"Type": "Tree",
+			"X": 8,
+			"Y": 8
+		},
+		{
+			"Type": "Tree",
+			"X": 24,
+			"Y": 24
+		},
+		{
+			"Type": "Tree",
+			"X": 8,
+			"Y": 24
+		},
+		{
+			"Type": "Tree",
+			"X": 24,
+			"Y": 8
+		}
+	],
+	"Structures": [
+		{
+			"Type": "Gold Mine",
+			"X": 8,
+			"Y": 4
+		},
+		{
+			"Type": "Gold Mine",
+			"X": 8,
+			"Y": 28
+		},
+		{
+			"Type": "Gold Mine",
+			"X": 24,
+			"Y": 28
+		},
+		{
+			"Type": "Gold Mine",
+			"X": 24,
+			"Y": 28
+		}
+	]
+}

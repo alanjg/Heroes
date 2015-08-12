@@ -1,0 +1,14 @@
+{
+	"Name": "Town Hall",
+	"Alias": "Town Hall",
+	"Width": 3,
+	"Height": 3,
+	"HitPoints": 1500,
+	"BuildTime": 60,
+	"Cost": { "Gold": 400 },
+	"Production": 
+	[	
+		"Demon"
+	],
+	"Upgrades": []
+}

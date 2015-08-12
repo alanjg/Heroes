@@ -1,0 +1,5 @@
+{
+	"Name": "Haven",
+	"Units": ["Footman"],
+	"Structures": ["TownHall"]
+}
