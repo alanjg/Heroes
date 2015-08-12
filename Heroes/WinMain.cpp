@@ -238,11 +238,12 @@ void LoadAndInstantiate(const std::string& directory, float x, float y)
 
 void InitScene()
 {
-	std::string selection = "E:\\HeroesAnimations\\ConvertedEffects\\ArmySelection";
+	std::string directoryRoot = "c:\\HeroesAnimations\\";
+	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
 	g_renderer->LoadModel(selection);
 
-	LoadAndInstantiate("E:\\HeroesAnimations\\ConvertedMap3\\Gold_Mine", -5, 0);
-	std::string modelDirectory = "e:\\HeroesAnimations\\Converted\\";
+	//LoadAndInstantiate(directoryRoot + "ConvertedMap3\\Gold_Mine", -5, 0);
+	std::string modelDirectory = directoryRoot + "Converted\\";
 	g_renderer->RegisterModelDirectory(modelDirectory);
 
 	bool renderAllModels = true;
@@ -250,13 +251,13 @@ void InitScene()
 
 	if (renderAllModels)
 	{
-		//g_renderer->LoadModel("E:\\HeroesAnimations\\ConvertedArenas\\Town\\NewHaven\\Monastery_u0r0");
-		//g_renderer->LoadModel("E:\\HeroesAnimations\\ConvertedArenas\\Town\\NewHaven\\Monastery_u1r0");
-		//g_renderer->LoadModel("E:\\HeroesAnimations\\ConvertedArenas\\Town\\NewHaven\\Monastery_u2r0");
-		//g_renderer->LoadModels("e:\\HeroesAnimations\\Converted\\");
-		g_renderer->LoadModels("e:\\HeroesAnimations\\ConvertedMap2\\");
-		//g_renderer->LoadModels("e:\\HeroesAnimations\\ConvertedMap3\\");
-		//g_renderer->LoadModels("E:\\HeroesAnimations\\ConvertedArenas\\Town\\NewHaven");
+		//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u0r0");
+		//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u1r0");
+		//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u2r0");
+		//g_renderer->LoadModels(directoryRoot + "Converted\\");
+		g_renderer->LoadModels(directoryRoot + "ConvertedMap2\\");
+		//g_renderer->LoadModels(directoryRoot + "ConvertedMap3\\");
+		//g_renderer->LoadModels(directoryRoot + "ConvertedArenas\\Town\\NewHaven");
 	
 		int c = 0;
 		for each(auto p in g_renderer->GetStaticMeshLookup())
