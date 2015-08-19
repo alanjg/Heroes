@@ -1,6 +1,3 @@
-// Heroes.cpp : Defines the entry point for the application.
-//
-
 #include "stdafx.h"
 #include "WinMain.h"
 #include "Renderer.h"
@@ -13,16 +10,15 @@
 #include "SelectionManager.h"
 #include "SkinnedMeshInstance.h"
 #include "StaticMeshInstance.h"
-HINSTANCE                           g_hInst = nullptr;
-HWND                                g_hWnd = nullptr;
-std::shared_ptr<Renderer>							g_renderer = nullptr;
-std::shared_ptr<Game>								g_game = nullptr;
-std::shared_ptr<InputManager>						g_inputManager = nullptr;
-std::shared_ptr<SelectionManager>					g_selectionMananger = nullptr;
+
+HINSTANCE g_hInst = nullptr;
+HWND g_hWnd = nullptr;
+std::shared_ptr<Renderer> g_renderer = nullptr;
+std::shared_ptr<Game> g_game = nullptr;
+std::shared_ptr<InputManager> g_inputManager = nullptr;
+std::shared_ptr<SelectionManager> g_selectionMananger = nullptr;
 #define MAX_LOADSTRING 100
 
-// Global Variables:
-HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
@@ -304,13 +300,10 @@ void InitScene()
 	unit2->Initialize(15, 0, footmanMesh);
 	g_game->entities.push_back(entity2);
 	
-
 	SkinnedMeshInstance* dragonMesh = g_renderer->CreateSkinnedMeshInstance("BlackDragon");
 	Unit* unit3 = new Unit();
 	dragonMesh->BindEntity(unit3);
 	std::shared_ptr<Entity> entity3(unit3);
 	unit3->Initialize(15, 0, dragonMesh);
-	g_game->entities.push_back(entity3);
-
-	
+	g_game->entities.push_back(entity3);	
 }

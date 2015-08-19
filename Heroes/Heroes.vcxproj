@@ -165,6 +165,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapTemplate.h" />
     <ClInclude Include="MeshInstance.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="SkinnedMeshInstance.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Spline.h" />
     <ClInclude Include="StaticMeshInstance.h" />
     <ClInclude Include="Structure.h" />
+    <ClInclude Include="Team.h" />
     <ClInclude Include="TownHall.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UnitAction.h" />
@@ -206,6 +208,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapTemplate.cpp" />
     <ClCompile Include="MeshInstance.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="SkinnedMeshInstance.cpp" />
@@ -223,6 +226,7 @@
     <ClCompile Include="Spline.cpp" />
     <ClCompile Include="StaticMeshInstance.cpp" />
     <ClCompile Include="Structure.cpp" />
+    <ClCompile Include="Team.cpp" />
     <ClCompile Include="TownHall.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UnitAction.cpp" />

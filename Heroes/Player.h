@@ -4,6 +4,7 @@
 class Entity;
 class Structure;
 class Unit;
+class Team;
 
 class Player
 {
@@ -12,6 +13,7 @@ class Player
 	std::vector<std::shared_ptr<Structure>> structures;
 
 	std::shared_ptr<Faction> faction;
+	std::shared_ptr<Team> team;
 
 public:
 	Player();

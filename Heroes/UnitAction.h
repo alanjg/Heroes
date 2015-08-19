@@ -50,3 +50,8 @@ public:
 	virtual void Update(float elapsedTime);
 	virtual bool IsActive();
 };
+
+class UnitAttackMoveAction : public UnitAction
+{
+
+};
