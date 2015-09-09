@@ -7,5 +7,6 @@
 	"Defense": 2,
 	"HitPoints": 10,
 	"Cost": { "Gold": 80 },
-	"BuildTime": 16
+	"BuildTime": 16,
+	"ModelName": "Demon"
 }

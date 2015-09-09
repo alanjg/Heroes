@@ -60,15 +60,16 @@ void Faction::LoadUnitFromFile(std::string fileName)
 	rapidjson::Document doc;
 	doc.ParseStream(is);
 
-	std::shared_ptr<Unit> unit(new Unit());
-	unit->name = doc["Name"].GetString();
-	unit->alias = doc["Alias"].GetString();
-	unit->size = doc["Size"].GetDouble();
-	unit->speed = doc["Speed"].GetDouble();
-	unit->attack = doc["Attack"].GetInt();
-	unit->defense = doc["Defense"].GetInt();
-	unit->hitPoints = doc["HitPoints"].GetInt();
-	entityFactory->Register(unit->name, unit);
+	std::shared_ptr<UnitDefinition> entity(new UnitDefinition());
+	entity->name = doc["Name"].GetString();
+	entity->alias = doc["Alias"].GetString();
+	entity->modelName = doc["ModelName"].GetString();
+	entity->size = doc["Size"].GetDouble();
+	entity->speed = doc["Speed"].GetDouble();
+	entity->attack = doc["Attack"].GetInt();
+	entity->defense = doc["Defense"].GetInt();
+	entity->hitPoints = doc["HitPoints"].GetInt();
+	entityFactory->Register(entity->name, entity);
 }
 
 void Faction::LoadStructureFromFile(std::string fileName)
@@ -80,9 +81,10 @@ void Faction::LoadStructureFromFile(std::string fileName)
 	rapidjson::Document doc;
 	doc.ParseStream(is);
 
-	std::shared_ptr<Structure> structure(new Structure());
+	std::shared_ptr<StructureDefinition> structure(new StructureDefinition());
 	structure->name = doc["Name"].GetString();
 	structure->alias = doc["Alias"].GetString();
+	structure->modelName = doc["ModelName"].GetString();
 	structure->hitPoints = doc["HitPoints"].GetInt();
 	structure->buildTime = doc["BuildTime"].GetDouble();
 	structure->width = doc["Width"].GetInt();
@@ -110,7 +112,7 @@ void Faction::LoadStructureFromFile(std::string fileName)
 	{
 		rapidjson::Value& p = production[i];
 		std::string ps = p.GetString();
-		std::shared_ptr<Entity> entity = entityFactory->Lookup(ps);
+		std::shared_ptr<EntityDefinition> entity = entityFactory->Lookup(ps);
 		if (entity != 0)
 		{
 			structure->productionOptions.push_back(entity);

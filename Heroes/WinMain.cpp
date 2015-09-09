@@ -10,6 +10,7 @@
 #include "SelectionManager.h"
 #include "SkinnedMeshInstance.h"
 #include "StaticMeshInstance.h"
+#include "ResourceManager.h"
 
 HINSTANCE g_hInst = nullptr;
 HWND g_hWnd = nullptr;
@@ -17,6 +18,7 @@ std::shared_ptr<Renderer> g_renderer = nullptr;
 std::shared_ptr<Game> g_game = nullptr;
 std::shared_ptr<InputManager> g_inputManager = nullptr;
 std::shared_ptr<SelectionManager> g_selectionMananger = nullptr;
+std::shared_ptr<ResourceManager> g_resourceManager = nullptr;
 #define MAX_LOADSTRING 100
 
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
@@ -47,7 +49,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	g_renderer.reset(new Renderer(g_hInst, g_hWnd));
 	g_selectionMananger.reset(new SelectionManager(g_renderer.get()));
 	g_inputManager.reset(new InputManager(g_game.get(), g_renderer.get(), g_selectionMananger.get()));
-	
+	g_resourceManager.reset(new ResourceManager(g_renderer));
+	g_resourceManager->LoadResources();
+
 	if (FAILED(g_renderer->InitDevice()))
 	{
 		return 0;

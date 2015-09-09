@@ -1,8 +1,9 @@
 #pragma once
 class MeshInstance;
-
+#include "EntityDefinition.h"
 class Entity
 {
+	EntityDefinition entityDefintition;
 public:
 	Entity();
 	~Entity();

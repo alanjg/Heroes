@@ -11,12 +11,12 @@ EntityFactory::~EntityFactory()
 {
 }
 
-void EntityFactory::Register(const std::string& name, std::shared_ptr<Entity> entity)
+void EntityFactory::Register(const std::string& name, std::shared_ptr<EntityDefinition> entity)
 {
 	entities[name] = entity;
 }
 
-std::shared_ptr<Entity> EntityFactory::Lookup(const std::string& name)
+std::shared_ptr<EntityDefinition> EntityFactory::Lookup(const std::string& name)
 {
 	auto ptr = entities.find(name);
 	if (ptr != entities.end())
@@ -27,4 +27,11 @@ std::shared_ptr<Entity> EntityFactory::Lookup(const std::string& name)
 	{
 		return 0;
 	}
+}
+
+
+std::shared_ptr<Entity> EntityFactory::Create(const std::string& name)
+{
+	std::shared_ptr<Entity> entity;
+	return entity;
 }

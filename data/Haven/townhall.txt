@@ -11,5 +11,6 @@
 		"Footman"
 	],
 	"Prerequisites": [],
-	"Upgrades": []
+	"Upgrades": [],
+	"ModelName": ""
 }

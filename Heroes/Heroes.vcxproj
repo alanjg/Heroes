@@ -153,6 +153,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Cost.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityDefinition.h" />
     <ClInclude Include="EntityDescriptor.h" />
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Faction.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="ClientConnection.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityDefinition.cpp" />
     <ClCompile Include="EntityDescriptor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Faction.cpp" />
