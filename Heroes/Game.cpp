@@ -27,6 +27,7 @@ void Game::CreateTestGame()
 {
 	state.reset(new GameState());
 	std::shared_ptr<Map> map(new Map());
+	
 	state->SetMap(map);
 
 	std::shared_ptr<Team> t1(new Team());

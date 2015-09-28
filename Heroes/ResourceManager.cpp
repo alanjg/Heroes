@@ -66,3 +66,15 @@ std::shared_ptr<Unit> ResourceManager::InstantiateUnit(std::shared_ptr<UnitDefin
 	unit->Initialize(x, y, mesh);
 	return unit;
 }
+
+
+std::shared_ptr<Unit> ResourceManager::InstantiateUnit(std::shared_ptr<EntityDescriptor> entityDescriptor)
+{
+	SkinnedMeshInstance* mesh = m_renderer->CreateSkinnedMeshInstance(entityDescriptor->name);
+
+	std::shared_ptr<Unit> unit(new Unit());
+	mesh->BindEntity(unit.get());
+	unit->Initialize(entityDescriptor->startX, entityDescriptor->startY, mesh);
+	return unit;
+
+}

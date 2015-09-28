@@ -163,6 +163,7 @@
     <ClInclude Include="GameParameters.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputPlayerController.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapTemplate.h" />
     <ClInclude Include="MeshInstance.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="GameParameters.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InputPlayerController.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapTemplate.cpp" />
     <ClCompile Include="MeshInstance.cpp" />
