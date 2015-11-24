@@ -21,8 +21,10 @@ public:
 
 	void LoadResources();
 	std::unordered_map<std::string, std::shared_ptr<Faction>>& GetFactions();
+	std::unordered_map<std::string, std::shared_ptr<MapTemplate>>& GetMaps();
 	EntityFactory& GetEntityFactory();
 	std::shared_ptr<Unit> InstantiateUnit(std::shared_ptr<UnitDefinition> unitDefinition, float x, float y);
 	std::shared_ptr<Unit> InstantiateUnit(std::shared_ptr<EntityDescriptor> entityDescriptor);
+
 };
 

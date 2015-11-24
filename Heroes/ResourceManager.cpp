@@ -51,6 +51,11 @@ std::unordered_map<std::string, std::shared_ptr<Faction>>& ResourceManager::GetF
 	return factions;
 }
 
+std::unordered_map<std::string, std::shared_ptr<MapTemplate>>& ResourceManager::GetMaps()
+{
+	return maps;
+}
+
 EntityFactory& ResourceManager::GetEntityFactory()
 {
 	return *entityFactory.get();

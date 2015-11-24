@@ -45,12 +45,13 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	if (FAILED(InitWindow(hInstance, nCmdShow)))
 		return 0;
 
-	g_game.reset(new Game());
+	
 	g_renderer.reset(new Renderer(g_hInst, g_hWnd));
 	g_selectionMananger.reset(new SelectionManager(g_renderer.get()));
 	g_inputManager.reset(new InputManager(g_game.get(), g_renderer.get(), g_selectionMananger.get()));
 	g_resourceManager.reset(new ResourceManager(g_renderer));
 	g_resourceManager->LoadResources();
+	g_game.reset(new Game(g_renderer.get(), g_selectionMananger.get(), g_inputManager.get(), g_resourceManager.get()));
 
 	if (FAILED(g_renderer->InitDevice()))
 	{
@@ -87,7 +88,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			elapsed += t - oldTime;
 			if (elapsed >= 1.0f)
 			{
-				fps = frames / elapsed;
+				fps = static_cast<int>(static_cast<float>(frames) / elapsed);
 				tps = triangles / elapsed;
 				tps /= 1e6;
 				elapsed = 0;
