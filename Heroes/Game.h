@@ -17,8 +17,8 @@ private:
 	ResourceManager* m_resourceManager;	
 
 public:
-	Game(Renderer* renderer, SelectionManager* selectionManager, InputManager* inputManager, ResourceManager* resourceManager);
-
+	Game();
+	void SetContext(Renderer* renderer, SelectionManager* selectionManager, InputManager* inputManager, ResourceManager* resourceManager);
 	std::vector<std::shared_ptr<Entity>> entities;
 	void Update(float elapsedTime);
 	void Render();

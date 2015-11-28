@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Faction.h"
-#include "Unit.h"
-#include "Structure.h"
+#include "Entity.h"
+#include "EntityDefinition.h"
 #include "EntityFactory.h"
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/document.h"
@@ -60,7 +60,7 @@ void Faction::LoadUnitFromFile(std::string fileName)
 	rapidjson::Document doc;
 	doc.ParseStream(is);
 
-	std::shared_ptr<UnitDefinition> entity(new UnitDefinition());
+	std::shared_ptr<EntityDefinition> entity(new EntityDefinition());
 	entity->name = doc["Name"].GetString();
 	entity->alias = doc["Alias"].GetString();
 	entity->modelName = doc["ModelName"].GetString();
@@ -69,7 +69,22 @@ void Faction::LoadUnitFromFile(std::string fileName)
 	entity->attack = doc["Attack"].GetInt();
 	entity->defense = doc["Defense"].GetInt();
 	entity->hitPoints = doc["HitPoints"].GetInt();
+
+	if (doc.HasMember("Actions"))
+	{
+		rapidjson::Value& actions = doc["Actions"];
+		for (size_t i = 0; i < actions.Capacity(); i++)
+		{
+			rapidjson::Value& a = actions[i];
+
+			std::string as = a.GetString();
+			EntityActionType action = ParseEntityActionType(as);
+			entity->actions.push_back(action);
+		}
+	}
+
 	entityFactory->Register(entity->name, entity);
+	m_entityDefinitions.push_back(entity);
 }
 
 void Faction::LoadStructureFromFile(std::string fileName)
@@ -81,7 +96,7 @@ void Faction::LoadStructureFromFile(std::string fileName)
 	rapidjson::Document doc;
 	doc.ParseStream(is);
 
-	std::shared_ptr<StructureDefinition> structure(new StructureDefinition());
+	std::shared_ptr<EntityDefinition> structure(new EntityDefinition());
 	structure->name = doc["Name"].GetString();
 	structure->alias = doc["Alias"].GetString();
 	structure->modelName = doc["ModelName"].GetString();
@@ -120,4 +135,17 @@ void Faction::LoadStructureFromFile(std::string fileName)
 	}
 
 	entityFactory->Register(structure->name, structure);
+	m_entityDefinitions.push_back(structure);
+}
+
+std::shared_ptr<EntityDefinition> Faction::ResolveAliasedEntityDefinition(const std::string& alias)
+{
+	for each(auto entityDefinition in m_entityDefinitions)
+	{
+		if (entityDefinition->alias == alias)
+		{
+			return entityDefinition;
+		}
+	}
+	return std::shared_ptr<EntityDefinition>();
 }

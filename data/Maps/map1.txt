@@ -11,12 +11,12 @@
 				{
 					"Alias": "Town Hall",
 					"X": 4,
-					"Y": 4
+					"Y": 6	
 				},
 				{
 					"Alias": "Worker",
 					"X": 4,
-					"Y": 3
+					"Y": 2
 				}
 			]
 		},
@@ -27,12 +27,12 @@
 				{
 					"Alias": "Town Hall",
 					"X": 28,
-					"Y": 28
+					"Y": 26
 				},
 				{
 					"Alias": "Worker",
 					"X": 28,
-					"Y": 27
+					"Y": 22
 				}
 			]
 		},
@@ -43,12 +43,12 @@
 				{
 					"Alias": "Town Hall",
 					"X": 28,
-					"Y": 4
+					"Y": 6
 				},
 				{
 					"Alias": "Worker",
 					"X": 28,
-					"Y": 3
+					"Y": 2
 				}
 			]
 		},
@@ -59,59 +59,61 @@
 				{
 					"Alias": "Town Hall",
 					"X": 4,
-					"Y": 28
+					"Y": 26
 				},
 				{
 					"Alias": "Worker",
 					"X": 4,
-					"Y": 27
+					"Y": 22
 				}
 			]
 		}
 	],
 	"BlockedCells": [ { "X": 0, "Y":0}],
-	"Scenery": [
-		{
-			"Type": "Tree",
-			"X": 8,
-			"Y": 8
-		},
-		{
-			"Type": "Tree",
-			"X": 24,
-			"Y": 24
-		},
-		{
-			"Type": "Tree",
-			"X": 8,
-			"Y": 24
-		},
-		{
-			"Type": "Tree",
-			"X": 24,
-			"Y": 8
-		}
-	],
 	"Structures": [
 		{
 			"Type": "Gold Mine",
-			"X": 8,
-			"Y": 4
+			"X": 10,
+			"Y": 6,
+			"Orientation": 90
 		},
 		{
 			"Type": "Gold Mine",
-			"X": 8,
-			"Y": 28
+			"X": 10,
+			"Y": 26,
+			"Orientation": 90
 		},
 		{
 			"Type": "Gold Mine",
-			"X": 24,
-			"Y": 28
+			"X": 22,
+			"Y": 6,
+			"Orientation": 90
 		},
 		{
 			"Type": "Gold Mine",
-			"X": 24,
-			"Y": 28
+			"X": 22,
+			"Y": 26,
+			"Orientation": 90
+		},
+		{
+			"Type": "Tree",
+			"X": 12,
+			"Y": 12
+		},
+		{
+			"Type": "Tree",
+			"X": 18,
+			"Y": 18
+		},
+		{
+			"Type": "Tree",
+			"X": 12,
+			"Y": 18
+		},
+		{
+			"Type": "Tree",
+			"X": 18,
+			"Y": 12
 		}
 	]
 }

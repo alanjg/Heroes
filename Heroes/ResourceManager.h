@@ -1,11 +1,12 @@
 #pragma once
 class Faction;
+class Entity;
 class EntityFactory;
 class MapTemplate;
 class Renderer;
-class Unit;
-class UnitDefinition;
+struct EntityDefinition;
 class EntityDescriptor;
+
 class ResourceManager
 {
 	std::shared_ptr<Renderer> m_renderer;
@@ -23,8 +24,8 @@ public:
 	std::unordered_map<std::string, std::shared_ptr<Faction>>& GetFactions();
 	std::unordered_map<std::string, std::shared_ptr<MapTemplate>>& GetMaps();
 	EntityFactory& GetEntityFactory();
-	std::shared_ptr<Unit> InstantiateUnit(std::shared_ptr<UnitDefinition> unitDefinition, float x, float y);
-	std::shared_ptr<Unit> InstantiateUnit(std::shared_ptr<EntityDescriptor> entityDescriptor);
+	//std::shared_ptr<Entity> InstantiateEntity(std::shared_ptr<EntityDefinition> entityDefinition, float x, float y);
+	std::shared_ptr<Entity> InstantiateEntity(std::shared_ptr<EntityDescriptor> entityDescriptor, Faction* faction);
 
 };
 

@@ -1,0 +1,15 @@
+{
+	"Name": "Barracks",
+	"Alias": "Barracks",
+	"Width": 2,
+	"Height": 2,
+	"HitPoints": 1500,
+	"BuildTime": 20,
+	"Cost": { "Gold": 200 },
+	"Production": 
+	[	
+		"Demon", "Succubus"
+	],
+	"Upgrades": [],
+	"ModelName": "GarrisonEvil"
+}

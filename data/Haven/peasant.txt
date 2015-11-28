@@ -1,0 +1,11 @@
+{
+	"Name": "Peasant",
+	"Alias": "Worker",
+	"Size": 1.0,
+	"Speed": 1.0,
+	"Attack": 1,
+	"Defense": 1,
+	"HitPoints": 5,
+	"ModelName": "Peasant",
+	"Actions": [ "Move", "Stop", "Hold", "Attack", "Build", "Repair" ]
+}

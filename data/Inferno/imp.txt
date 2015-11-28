@@ -1,0 +1,13 @@
+{
+	"Name": "Imp",
+	"Alias": "Worker",
+	"Size": 0.8,
+	"Speed": 1.4,
+	"Attack": 1,
+	"Defense": 1,
+	"HitPoints": 10,
+	"Cost": { "Gold": 80 },
+	"BuildTime": 16,
+	"ModelName": "Imp",
+	"Actions": [ "Move", "Stop", "Hold", "Attack", "Build", "Repair" ]
+}

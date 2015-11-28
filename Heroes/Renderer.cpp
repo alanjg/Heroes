@@ -150,7 +150,8 @@ HRESULT Renderer::InitDevice()
 
 	UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
-	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	// thanks windows 10
+	//createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
 	D3D_DRIVER_TYPE driverTypes [] =
@@ -515,7 +516,7 @@ SkinnedMeshInstance* Renderer::CreateSkinnedMeshInstance(const std::string& mesh
 		skinnedMeshInstances.push_back(instance);
 		return instance.get();
 	}
-	return NULL;
+	return nullptr;
 }
 
 StaticMeshInstance* Renderer::CreateStaticMeshInstance(const std::string& meshName)
@@ -533,7 +534,7 @@ StaticMeshInstance* Renderer::CreateStaticMeshInstance(const std::string& meshNa
 		staticMeshInstances.push_back(instance);
 		return instance.get();
 	}
-	return NULL;
+	return nullptr;
 }
 
 

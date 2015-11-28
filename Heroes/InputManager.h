@@ -3,9 +3,11 @@
 class Game;
 class Renderer;
 class SelectionManager;
+class InputPlayerController;
 
 class InputManager
 {
+	InputPlayerController* m_playerController;
 	Game* m_game;
 	Renderer* m_renderer;
 	SelectionManager* m_selectionManager;
@@ -14,6 +16,8 @@ class InputManager
 	bool isDragging;
 public:
 	InputManager(Game* game, Renderer* renderer, SelectionManager* selectionManager);
+	void BindPlayerController(InputPlayerController* playerController);
+
 	void HandleKey(int key);
 	void HandleMouseMove(int x, int y);
 	void HandleMouseWheel(int zDelta);

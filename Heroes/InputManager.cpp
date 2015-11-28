@@ -3,10 +3,11 @@
 #include "Renderer.h"
 #include "Game.h"
 #include "Entity.h"
-#include "Unit.h"
 #include "Camera.h"
 #include "SelectionManager.h"
-#include "UnitAction.h"
+#include "EntityAction.h"
+#include "InputPlayerController.h"
+#include "Player.h"
 
 InputManager::InputManager(Game* game, Renderer* renderer, SelectionManager* selectionManager) :
 	m_game(game), m_renderer(renderer), m_selectionManager(selectionManager)
@@ -14,55 +15,18 @@ InputManager::InputManager(Game* game, Renderer* renderer, SelectionManager* sel
 
 }
 
+void InputManager::BindPlayerController(InputPlayerController* playerController)
+{
+	m_playerController = playerController;
+}
+
 void InputManager::HandleKey(int key)
 {
 	switch (key)
 	{
-	case ' ':
-		m_renderer->play = !m_renderer->play;
-		break;
-	case 'P':
-		m_renderer->writeModel = true;
-		break;
-	case 190: //'.':
-		m_renderer->animationIndex++;
-		break;
-	case 188: //',':
-		m_renderer->animationIndex--;
-		break;
-	/*case '1':
-		m_game->entities[0]->WalkToPoint(-3, 0);
-		break;
-	case '2':
-		m_game->entities[0]->WalkToPoint(3, 0);
-		break;
-	case '3':
-		m_game->entities[0]->WalkToPoint(3, 3);
-		break;
-	case '4':
-		m_game->entities[0]->WalkToPoint(-3, 3);
-		break;
-	case '5':
-		m_game->entities[0]->WalkToPoint(0, 3);
-		break;
-	case '6':
-		m_game->entities[1]->WalkToPoint(-3, 0);
-		break;
-	case '7':
-		m_game->entities[1]->WalkToPoint(3, 0);
-		break;
-	case '8':
-		m_game->entities[1]->WalkToPoint(3, 3);
-		break;
-	case '9':
-		m_game->entities[1]->WalkToPoint(-3, 3);
-		break;
-	case '0':
-		m_game->entities[1]->WalkToPoint(0, 3);
-		break;*/
+	
 	}
 }
-
 
 void InputManager::Update(float elapsedTime)
 {
@@ -137,11 +101,17 @@ void InputManager::HandleMouseRightButtonDown(int x, int y)
 		// attack hit element
 		for each(auto e in m_selectionManager->selection)
 		{
-			Unit* unit = dynamic_cast<Unit*>(e);
-			if (unit != nullptr)
+			for each(auto p in m_playerController->GetPlayer()->GetEntities())
 			{
-				std::shared_ptr<UnitAction> action(new UnitAttackAction(hitElement, unit));
-				unit->currentAction = action;
+				if (p.get() == e)
+				{
+					if (e->CanMove())
+					{
+						std::shared_ptr<EntityAction> action(new EntityAttackAction(hitElement, e));
+						e->currentAction = action;
+					}
+					break;
+				}
 			}
 		}
 	}
@@ -165,11 +135,16 @@ void InputManager::HandleMouseRightButtonDown(int x, int y)
 			XMStoreFloat4(&pf, p);
 			for each(auto e in m_selectionManager->selection)
 			{
-				Unit* unit = dynamic_cast<Unit*>(e);
-				if (unit != nullptr)
+				for each(auto p in m_playerController->GetPlayer()->GetEntities())
 				{
-					unit->Stop();
-					unit->WalkToPoint(pf.x, pf.z);
+					if (p.get() == e)
+					{
+						if (e->CanMove())
+						{
+							e->Stop();
+							e->WalkToPoint(pf.x, pf.z);
+						}
+					}
 				}
 			}
 		}

@@ -1,11 +1,11 @@
 {
-	"Name": "Footman",
-	"Alias": "Footman",
+	"Name": "Archer",
+	"Alias": "Archer",
 	"Size": 1.0,
 	"Speed": 1.0,
 	"Attack": 2,
 	"Defense": 3,
 	"HitPoints": 15,
-	"ModelName": "Footman",
+	"ModelName": "Archer",
 	"Actions": [ "Move", "Stop", "Hold", "Attack" ]
 }

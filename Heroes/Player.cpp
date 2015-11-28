@@ -12,19 +12,14 @@ Player::~Player()
 }
 
 
-std::vector<std::shared_ptr<Unit>>& Player::GetUnits()
+std::vector<std::shared_ptr<Entity>>& Player::GetEntities()
 {
-	return units;
-}
-
-std::vector<std::shared_ptr<Structure>>& Player::GetStructures()
-{
-	return structures;
+	return m_entities;
 }
 
 void Player::CheckElimination()
 {
-	if (units.size() == 0 && structures.size() == 0)
+	if (m_entities.size() == 0)
 	{
 		isEliminated = true;
 	}
@@ -33,4 +28,14 @@ void Player::CheckElimination()
 bool Player::GetIsEliminated()
 {
 	return isEliminated;
+}
+
+std::shared_ptr<Faction> Player::GetFaction()
+{
+	return m_faction;
+}
+
+void Player::SetFaction(std::shared_ptr<Faction> faction)
+{
+	m_faction = faction;
 }

@@ -8,8 +8,8 @@
 	"Cost": { "Gold": 400 },
 	"Production": 
 	[	
-		"Demon"
+		"Imp"
 	],
 	"Upgrades": [],
-	"ModelName": ""
+	"ModelName": "Sanctuary"
 }

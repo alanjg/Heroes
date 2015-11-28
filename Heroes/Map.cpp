@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "PlayerController.h"
 #include "Player.h"
+#include "Game.h"
 
 Map::Map()
 {
@@ -14,7 +15,7 @@ Map::~Map()
 {
 }
 
-void Map::Create(std::vector<std::shared_ptr<PlayerController>> playerControllers, std::shared_ptr<MapTemplate> mapTemplate, ResourceManager* resourceManager)
+void Map::Create(std::vector<std::shared_ptr<PlayerController>> playerControllers, std::shared_ptr<MapTemplate> mapTemplate, ResourceManager* resourceManager, Game* game)
 {
 	m_playerControllers = playerControllers;
 	std::random_shuffle(mapTemplate->startLocations.begin(), mapTemplate->startLocations.end());
@@ -25,8 +26,15 @@ void Map::Create(std::vector<std::shared_ptr<PlayerController>> playerController
 		
 		for each(auto entity in	startLocation->entities)
 		{
-			std::shared_ptr<Unit> unit = resourceManager->InstantiateUnit(entity);
-			player->GetUnits().push_back(unit);
+			std::shared_ptr<Entity> unit = resourceManager->InstantiateEntity(entity, player->GetFaction().get());
+			player->GetEntities().push_back(unit);
+			game->entities.push_back(unit);
 		}
+	}
+
+	for each(auto entity in mapTemplate->structures)
+	{
+		std::shared_ptr<Entity> structure = resourceManager->InstantiateEntity(entity, nullptr);
+		game->entities.push_back(structure);
 	}
 }

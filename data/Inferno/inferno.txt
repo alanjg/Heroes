@@ -1,5 +1,5 @@
 {
 	"Name": "Inferno",
-	"Units": ["Demon"],
-	"Structures": ["TownHall"]
+	"Units": ["Imp", "Demon", "Succubus"],
+	"Structures": ["TownHall", "Barracks"]
 }

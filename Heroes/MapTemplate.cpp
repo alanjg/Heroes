@@ -55,8 +55,16 @@ void MapTemplate::LoadFromFile(const std::string& fileName)
 			{
 				continue;
 			}
-			loc->startX = entity["X"].GetInt();
-			loc->startY = entity["Y"].GetInt();
+			ed->startX = entity["X"].GetInt();
+			ed->startY = entity["Y"].GetInt();
+			if (entity.HasMember("Orientation"))
+			{
+				ed->orientation = entity["Orientation"].GetInt();
+			}
+			else
+			{
+				ed->orientation = 0;
+			}
 			loc->entities.push_back(ed);
 		}
 		startLocations.push_back(loc);
@@ -70,11 +78,6 @@ void MapTemplate::LoadFromFile(const std::string& fileName)
 		c.first = cell["X"].GetInt();
 		c.second = cell["Y"].GetInt();
 		blockedCells.push_back(c);
-	}
-
-	rapidjson::Value& sceneryValue = doc["Scenery"];
-	for (unsigned int i = 0; i < sceneryValue.Capacity(); i++)
-	{
 	}
 
 	rapidjson::Value& structuresValue = doc["Structures"];

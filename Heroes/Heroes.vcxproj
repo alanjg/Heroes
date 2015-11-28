@@ -158,7 +158,6 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Faction.h" />
     <ClInclude Include="File.h" />
-    <ClInclude Include="Footman.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameParameters.h" />
     <ClInclude Include="GameState.h" />
@@ -179,11 +178,8 @@
     <ClInclude Include="SelectionManager.h" />
     <ClInclude Include="Spline.h" />
     <ClInclude Include="StaticMeshInstance.h" />
-    <ClInclude Include="Structure.h" />
     <ClInclude Include="Team.h" />
-    <ClInclude Include="TownHall.h" />
-    <ClInclude Include="Unit.h" />
-    <ClInclude Include="UnitAction.h" />
+    <ClInclude Include="EntityAction.h" />
     <ClInclude Include="VertexDefinitions.h" />
     <ClInclude Include="WinMain.h" />
     <ClInclude Include="Renderer.h" />
@@ -203,7 +199,6 @@
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Faction.cpp" />
     <ClCompile Include="File.cpp" />
-    <ClCompile Include="Footman.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameParameters.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -229,11 +224,8 @@
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="Spline.cpp" />
     <ClCompile Include="StaticMeshInstance.cpp" />
-    <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Team.cpp" />
-    <ClCompile Include="TownHall.cpp" />
-    <ClCompile Include="Unit.cpp" />
-    <ClCompile Include="UnitAction.cpp" />
+    <ClCompile Include="EntityAction.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

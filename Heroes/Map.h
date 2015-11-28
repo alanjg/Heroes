@@ -3,6 +3,7 @@ class MapTemplate;
 class Entity;
 class PlayerController;
 class ResourceManager;
+class Game;
 
 class Map
 {
@@ -13,6 +14,6 @@ class Map
 public:
 	Map();
 	~Map();
-	void Create(std::vector<std::shared_ptr<PlayerController>> playerControllers, std::shared_ptr<MapTemplate> mapTemplate, ResourceManager* resourceManager);
+	void Create(std::vector<std::shared_ptr<PlayerController>> playerControllers, std::shared_ptr<MapTemplate> mapTemplate, ResourceManager* resourceManager, Game* game);
 };
 

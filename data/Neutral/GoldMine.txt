@@ -1,0 +1,13 @@
+{
+	"Name": "Gold Mine",
+	"Alias": "Gold Mine",
+	"HitPoints": 1500,
+	"BuildTime": 60,
+	"Width": 3,
+	"Height": 3,
+	"Cost": { "Gold": 400 },
+	"Production": [],
+	"Prerequisites": [],
+	"Upgrades": [],
+	"ModelName": "Gold_Mine"
+}

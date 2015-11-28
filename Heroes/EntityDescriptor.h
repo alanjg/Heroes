@@ -8,5 +8,6 @@ public:
 	std::string name;
 	std::string alias;
 	int startX, startY;
+	int orientation;
 };
 

@@ -14,4 +14,3 @@ public:
 	void SetPlayer(std::shared_ptr<Player> player);
 	Player* GetPlayer();
 };
-

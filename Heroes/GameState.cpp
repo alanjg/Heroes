@@ -28,9 +28,9 @@ void GameState::Update(float elapsedTime)
 {
 	for each(auto player in m_players)
 	{
-		for each(auto unit in player->GetUnits())
+		for each(auto entity in player->GetEntities())
 		{
-			unit;
+			entity;
 		}
 	}
 }

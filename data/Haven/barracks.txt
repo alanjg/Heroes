@@ -1,0 +1,13 @@
+{
+	"Name": "Barracks",
+	"Alias": "Barracks",
+	"HitPoints": 800,
+	"BuildTime": 5,
+	"Width": 2,
+	"Height": 2,
+	"Cost": { "Gold": 150 },
+	"Production": [ "Footman", "Archer" ],
+	"Prerequisites": [ "Town Hall"],
+	"Upgrades": [],
+	"ModelName": "Barracks"
+}

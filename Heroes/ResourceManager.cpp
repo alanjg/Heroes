@@ -4,9 +4,10 @@
 #include "Faction.h"
 #include "EntityFactory.h"
 #include "MapTemplate.h"
-#include "Unit.h"
+#include "Entity.h"
 #include "EntityDefinition.h"
 #include "Renderer.h"
+#include "StaticMeshInstance.h"
 #include "SkinnedMeshInstance.h"
 
 ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer)
@@ -38,10 +39,10 @@ void ResourceManager::LoadResources()
 
 	std::ifstream mapsInfile(dataRoot + "maps.txt");
 	std::string mapName;
-	while (infile >> mapName)
+	while (mapsInfile >> mapName)
 	{
 		std::shared_ptr<MapTemplate> map(new MapTemplate(entityFactory));
-		map->LoadFromFile(dataRoot + mapName + "\\");
+		map->LoadFromFile(dataRoot + "Maps\\" + mapName + ".txt");
 		maps[mapName] = map;
 	}
 }
@@ -61,25 +62,39 @@ EntityFactory& ResourceManager::GetEntityFactory()
 	return *entityFactory.get();
 }
 
-
-std::shared_ptr<Unit> ResourceManager::InstantiateUnit(std::shared_ptr<UnitDefinition> unitDefinition, float x, float y)
+/*
+std::shared_ptr<Entity> ResourceManager::InstantiateEntity(std::shared_ptr<EntityDefinition> entityDefinition, float x, float y)
 {
-	SkinnedMeshInstance* mesh = m_renderer->CreateSkinnedMeshInstance(unitDefinition->modelName);
+	SkinnedMeshInstance* mesh = m_renderer->CreateSkinnedMeshInstance(entityDefinition->modelName);
 
-	std::shared_ptr<Unit> unit(new Unit());
+	std::shared_ptr<Entity> unit(new Entity());
 	mesh->BindEntity(unit.get());
 	unit->Initialize(x, y, mesh);
 	return unit;
 }
+*/
 
-
-std::shared_ptr<Unit> ResourceManager::InstantiateUnit(std::shared_ptr<EntityDescriptor> entityDescriptor)
+std::shared_ptr<Entity> ResourceManager::InstantiateEntity(std::shared_ptr<EntityDescriptor> entityDescriptor, Faction* faction)
 {
-	SkinnedMeshInstance* mesh = m_renderer->CreateSkinnedMeshInstance(entityDescriptor->name);
+	std::string meshName;
+	std::shared_ptr<EntityDefinition> entityDefinition;
+	if (entityDescriptor->name.size() == 0)
+	{
+		entityDefinition = faction->ResolveAliasedEntityDefinition(entityDescriptor->alias);
+	}
+	else
+	{
+		entityDefinition = entityFactory->Lookup(entityDescriptor->name);
+	}
 
-	std::shared_ptr<Unit> unit(new Unit());
+	MeshInstance* mesh = m_renderer->CreateSkinnedMeshInstance(entityDefinition->modelName);
+	if (mesh == nullptr)
+	{
+		mesh = m_renderer->CreateStaticMeshInstance(entityDefinition->modelName);
+	}
+
+	std::shared_ptr<Entity> unit(new Entity(*entityDefinition.get()));
 	mesh->BindEntity(unit.get());
-	unit->Initialize(entityDescriptor->startX, entityDescriptor->startY, mesh);
+	unit->Initialize((float)entityDescriptor->startX, (float)entityDescriptor->startY, (float)entityDescriptor->orientation, mesh);
 	return unit;
-
 }

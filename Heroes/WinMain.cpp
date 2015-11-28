@@ -2,7 +2,6 @@
 #include "WinMain.h"
 #include "Renderer.h"
 #include "Entity.h"
-#include "Unit.h"
 #include "Camera.h"
 #include "Game.h"
 #include "InputManager.h"
@@ -45,20 +44,29 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	if (FAILED(InitWindow(hInstance, nCmdShow)))
 		return 0;
 
-	
+	g_game.reset(new Game());
 	g_renderer.reset(new Renderer(g_hInst, g_hWnd));
 	g_selectionMananger.reset(new SelectionManager(g_renderer.get()));
 	g_inputManager.reset(new InputManager(g_game.get(), g_renderer.get(), g_selectionMananger.get()));
 	g_resourceManager.reset(new ResourceManager(g_renderer));
 	g_resourceManager->LoadResources();
-	g_game.reset(new Game(g_renderer.get(), g_selectionMananger.get(), g_inputManager.get(), g_resourceManager.get()));
+	g_game->SetContext(g_renderer.get(), g_selectionMananger.get(), g_inputManager.get(), g_resourceManager.get());
 
 	if (FAILED(g_renderer->InitDevice()))
 	{
 		return 0;
 	}
 
-	InitScene();
+	std::string directoryRoot = "c:\\HeroesAnimations\\";
+	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
+	g_renderer->LoadModel(selection);
+
+	std::string modelDirectory = directoryRoot + "Converted\\";
+	g_renderer->RegisterModelDirectory(modelDirectory);
+	g_renderer->LoadModels(directoryRoot + "ConvertedMap2\\");
+
+	//InitScene();
+	g_game->CreateTestGame();
 	static float t = 0.0f;
 	
 	// Main message loop
@@ -224,7 +232,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
-
+/*
 void LoadAndInstantiate(const std::string& directory, float x, float y)
 {
 	std::string modelName = g_renderer->LoadModel(directory);
@@ -236,7 +244,9 @@ void LoadAndInstantiate(const std::string& directory, float x, float y)
 	entity->Initialize(x, y, mesh);
 	g_game->entities.push_back(entity);
 }
+*/
 
+/*
 void InitScene()
 {
 	std::string directoryRoot = "c:\\HeroesAnimations\\";
@@ -277,7 +287,7 @@ void InitScene()
 		for each(auto p in g_renderer->GetSkinnedMeshLookup())
 		{
 			SkinnedMeshInstance* mesh = g_renderer->CreateSkinnedMeshInstance(p.first);
-			Unit* unit = new Unit();
+			Entity* unit = new Entity();
 			mesh->BindEntity(unit);
 			std::shared_ptr<Entity> entity(unit);
 			unit->Initialize((c / 12) * 12, (c % 12) * 12, mesh);
@@ -291,7 +301,7 @@ void InitScene()
 	for (int i = 0; i < 3; i++)
 	{
 		SkinnedMeshInstance* angelMesh = g_renderer->CreateSkinnedMeshInstance("Angel");
-		Unit* unit = new Unit();
+		Entity* unit = new Entity();
 		angelMesh->BindEntity(unit);
 		std::shared_ptr<Entity> entity(unit);
 		unit->Initialize((i / 12) * 4, (i % 12) * 4, angelMesh);
@@ -299,16 +309,16 @@ void InitScene()
 	}
 	
 	SkinnedMeshInstance* footmanMesh = g_renderer->CreateSkinnedMeshInstance("Footman");
-	Unit* unit2 = new Unit();
+	Entity* unit2 = new Entity();
 	footmanMesh->BindEntity(unit2);
 	std::shared_ptr<Entity> entity2(unit2);
 	unit2->Initialize(15, 0, footmanMesh);
 	g_game->entities.push_back(entity2);
 	
 	SkinnedMeshInstance* dragonMesh = g_renderer->CreateSkinnedMeshInstance("BlackDragon");
-	Unit* unit3 = new Unit();
+	Entity* unit3 = new Entity();
 	dragonMesh->BindEntity(unit3);
 	std::shared_ptr<Entity> entity3(unit3);
 	unit3->Initialize(15, 0, dragonMesh);
 	g_game->entities.push_back(entity3);	
-}
+}*/

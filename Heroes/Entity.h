@@ -1,34 +1,56 @@
 #pragma once
 class MeshInstance;
+class SkinnedMeshInstance;
+class EntityAction;
+
 #include "EntityDefinition.h"
 class Entity
 {
-	EntityDefinition entityDefintition;
+	EntityDefinition& entityDefintition;
 public:
-	Entity();
+	Entity(EntityDefinition& definition);
 	~Entity();
 
+	bool isAnimatedMesh;
 	MeshInstance* m_mesh;
 	float x, y;
-	//float animationAnchorX, animationAnchorY;
-	//float targetX, targetY;
 	float orientation;
-	//MeshInstance* mesh;
-	//float walkProgress;
-	//float idleProgress;
-
-	//float walkSpeed, turnSpeed;
-	//bool isTurning;
-	//bool isWalking;
-
+	
 	std::string name;
 	std::string alias;
 	float position[3];
 	float velocity[3];
-	int hitPoints;
-	int defense;
 
-	virtual void Initialize(float xx, float yy, MeshInstance* m);
+	std::shared_ptr<EntityAction> currentAction;
+
+	// movement and animation variables
+	float animationAnchorX, animationAnchorY;
+	float targetX, targetY;
+	float targetOrientation, turnDirection;
+	SkinnedMeshInstance* m_skinnedMesh;
+	float walkProgress;
+	float idleProgress;
+	float attackProgress;
+
+	float walkSpeed, turnSpeed;
+	bool isTurning;
+	bool isWalking;
+	bool isAttacking;
+
+	// unit attributes for combat
+	float size;
+	float speed;
+	int attack;
+	int defense;
+	int hitPoints;
+
+	// Actions
+	bool CanMove();
+	void WalkToPoint(float tx, float ty);
+	void Attack();
+	void Stop();
+
+	virtual void Initialize(float startX, float startY, float startOrientation, MeshInstance* m);
 	void Render();
 	virtual void Update(float time);
 };
