@@ -10,14 +10,14 @@ class EntityDescriptor;
 class ResourceManager
 {
 	std::shared_ptr<Renderer> m_renderer;
-	std::string dataRoot;
+	std::string m_dataRoot;
 	void LoadFaction(const std::string& factionName);
 	std::unordered_map<std::string, std::shared_ptr<Faction>> factions;
 
 	std::unordered_map<std::string, std::shared_ptr<MapTemplate>> maps;
 	std::shared_ptr<EntityFactory> entityFactory;
 public:
-	ResourceManager(std::shared_ptr<Renderer> renderer);
+	ResourceManager(std::shared_ptr<Renderer> renderer, const std::string& dataRoot);
 	~ResourceManager();
 
 	void LoadResources();

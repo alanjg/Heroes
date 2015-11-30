@@ -44,11 +44,35 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	if (FAILED(InitWindow(hInstance, nCmdShow)))
 		return 0;
 
+	struct stat buffer;
+	std::string dataRoot = "C:\\Users\\alanga\\Documents\\GitHub\\Heroes\\data\\";
+	if (stat(dataRoot.c_str(), &buffer) != 0)
+	{
+		dataRoot = "C:\\Users\\alan\\Documents\\GitHub\\Heroes\\data\\";
+		if (stat(dataRoot.c_str(), &buffer) != 0)
+		{
+			MessageBoxA(g_hWnd, "You must have heroes data", "Heroes data directory not found", MB_ICONERROR);
+			return 0;
+		}
+	}
+
+	std::string directoryRoot = "c:\\HeroesAnimations\\";
+	
+	if (stat(directoryRoot.c_str(), &buffer) != 0)
+	{
+		directoryRoot = "e:\\HeroesAnimations\\";
+		if (stat(directoryRoot.c_str(), &buffer) != 0)
+		{
+			MessageBoxA(g_hWnd, "You must have heroes animation data in c:\\HeroesAnimations or e:\\HeroesAnimations", "HeroesAnimations directory not found", MB_ICONERROR);
+			return 0;
+		}
+	}
+
 	g_game.reset(new Game());
 	g_renderer.reset(new Renderer(g_hInst, g_hWnd));
 	g_selectionMananger.reset(new SelectionManager(g_renderer.get()));
 	g_inputManager.reset(new InputManager(g_game.get(), g_renderer.get(), g_selectionMananger.get()));
-	g_resourceManager.reset(new ResourceManager(g_renderer));
+	g_resourceManager.reset(new ResourceManager(g_renderer, dataRoot));
 	g_resourceManager->LoadResources();
 	g_game->SetContext(g_renderer.get(), g_selectionMananger.get(), g_inputManager.get(), g_resourceManager.get());
 
@@ -57,7 +81,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return 0;
 	}
 
-	std::string directoryRoot = "c:\\HeroesAnimations\\";
+	
+
 	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
 	g_renderer->LoadModel(selection);
 

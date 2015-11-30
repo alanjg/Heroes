@@ -10,8 +10,8 @@
 #include "StaticMeshInstance.h"
 #include "SkinnedMeshInstance.h"
 
-ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer)
-	:dataRoot("C:\\Users\\alanga\\Documents\\GitHub\\Heroes\\data\\"),
+ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer, const std::string& dataRoot)
+	:m_dataRoot(dataRoot),
 	m_renderer(renderer)
 {
 	entityFactory.reset(new EntityFactory());
@@ -24,25 +24,25 @@ ResourceManager::~ResourceManager()
 void ResourceManager::LoadFaction(const std::string& factionName)
 {
 	std::shared_ptr<Faction> faction(new Faction(entityFactory));
-	faction->LoadFromDirectory(factionName, dataRoot + factionName + "\\");
+	faction->LoadFromDirectory(factionName, m_dataRoot + factionName + "\\");
 	factions[factionName] = faction;
 }
 
 void ResourceManager::LoadResources()
 {
-	std::ifstream infile(dataRoot + "factions.txt");
+	std::ifstream infile(m_dataRoot + "factions.txt");
 	std::string factionName;
 	while (infile >> factionName)
 	{
 		LoadFaction(factionName);
 	}
 
-	std::ifstream mapsInfile(dataRoot + "maps.txt");
+	std::ifstream mapsInfile(m_dataRoot + "maps.txt");
 	std::string mapName;
 	while (mapsInfile >> mapName)
 	{
 		std::shared_ptr<MapTemplate> map(new MapTemplate(entityFactory));
-		map->LoadFromFile(dataRoot + "Maps\\" + mapName + ".txt");
+		map->LoadFromFile(m_dataRoot + "Maps\\" + mapName + ".txt");
 		maps[mapName] = map;
 	}
 }
