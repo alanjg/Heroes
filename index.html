@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Heroes : Model animation and rendering for Heroes of Might and Magic 5">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Heroes</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/alanjg/Heroes">View on GitHub</a>
+
+          <h1 id="project_title">Heroes</h1>
+          <h2 id="project_tagline">Model animation and rendering for Heroes of Might and Magic 5</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/alanjg/Heroes/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/alanjg/Heroes/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>This is a project to animate and render models from the Heroes of Might and Magic V computer game.  Heroes 5 uses a proprietary format for its geometry meshes and the granny 3D format for mesh skeletons and animations, and it stores general model data in an xml format(e.g. texture info, which mesh, skeleton and animations are related, etc).  There was an existing tool that converted the mesh file into an <a href="https://developer.valvesoftware.com/wiki/Studiomdl_Data">SMD file</a>, but that only contained the model geometry and default skeleton, with no animations.  I built a converter that could parse the game's data directory, extract all models and their related skeletons and animations, and prepare it for rendering.
+Since the game uses a special mesh format, the default Granny 3D animation code won't work correctly, so I reverse engineered and re-implemented the Granny 3D spline animation routines.  The skeleton system is a hierarchical system of animated transforms with various weights applied to each transform, and with position, rotation, and scale animation tracks using B-Splines.  The renderer uses a vertex shader to apply the different transforms.<br>
+Here is an example of a peasant from the game:<br>
+<img src="https://raw.githubusercontent.com/alanjg/alanjg.github.io/master/images/Peasant.png" alt="Peasant"><br>
+Here is the peasant rendered with a selection icon and some buildings in the background:<br>
+<img src="https://raw.githubusercontent.com/alanjg/alanjg.github.io/master/images/heroes.png" alt="Peasant running">  </p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Heroes maintained by <a href="https://github.com/alanjg">alanjg</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
