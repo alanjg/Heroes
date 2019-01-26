@@ -433,7 +433,7 @@ HRESULT Renderer::DrawRect(int left, int top, int right, int bottom)
 
 
 	// Use the DrawText method of the D2D render target interface to draw.
-	D2D1_RECT_F rect = D2D1::RectF(left, top, right, bottom);
+	D2D1_RECT_F rect = D2D1::RectF((float)left, (float)top, (float)right, (float)bottom);
 	m_pRT->DrawRectangle(rect, m_pSelectionBrush);
 	
 	hr = m_pRT->EndDraw();
@@ -477,8 +477,11 @@ Renderer::~Renderer()
 	if (g_pImmediateContext) g_pImmediateContext->Release();
 	if (g_pd3dDevice) g_pd3dDevice->Release();
 
+	if (m_pD2DFactory) m_pD2DFactory->Release();
 	if (m_pRT) m_pRT->Release();
+	if (m_pDWriteFactory) m_pDWriteFactory->Release();
 	if (m_pTextBrush) m_pTextBrush->Release();
+	if (m_pTextFormat) m_pTextFormat->Release();
 	if (m_pSelectionBrush) m_pSelectionBrush->Release();
 }
 
@@ -650,7 +653,7 @@ Entity* Renderer::Pick(int sx, int sy)
 	XMMATRIX V = XMLoadFloat4x4(&m_camera->GetViewMatrix());
 	XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
 
-	for each(auto m in skinnedMeshInstances)
+	for (auto m : skinnedMeshInstances)
 	{
 		XMMATRIX W = XMLoadFloat4x4(&m->GetTransform());
 		XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
@@ -676,7 +679,7 @@ Entity* Renderer::Pick(int sx, int sy)
 		}
 	}
 
-	for each(auto m in staticMeshInstances)
+	for (auto m : staticMeshInstances)
 	{
 		XMMATRIX W = XMLoadFloat4x4(&m->GetTransform());
 		XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
@@ -721,7 +724,7 @@ void Renderer::Pick(int sx, int sy, int sw, int sh, std::vector<Entity*>& hitEle
 			coord.z = 0;
 			coord.w = 1;
 			XMVECTOR cv = XMLoadFloat4(&coord);
-			XMVECTOR screen = XMVector3Project(cv, 0, 0, m_viewportWidth, m_viewportHeight, 0.01f, 1000.0f, P, V, W);
+			XMVECTOR screen = XMVector3Project(cv, 0, 0, (float)m_viewportWidth, (float)m_viewportHeight, 0.01f, 1000.0f, P, V, W);
 			XMFLOAT4 screenCoord;
 			XMStoreFloat4(&screenCoord, screen);
 			if (sx <= screenCoord.x && sx + sw >= screenCoord.x && sy < screenCoord.y && sy + sh >= screenCoord.y)
@@ -742,7 +745,7 @@ void Renderer::Pick(int sx, int sy, int sw, int sh, std::vector<Entity*>& hitEle
 			coord.z = 0;
 			coord.w = 1;
 			XMVECTOR cv = XMLoadFloat4(&coord);
-			XMVECTOR screen = XMVector3Project(cv, 0, 0, m_viewportWidth, m_viewportHeight, 0.01f, 1000.0f, P, V, W);
+			XMVECTOR screen = XMVector3Project(cv, 0, 0, (float)m_viewportWidth, (float)m_viewportHeight, 0.01f, 1000.0f, P, V, W);
 			XMFLOAT4 screenCoord;
 			XMStoreFloat4(&screenCoord, screen);
 			if (sx <= screenCoord.x && sx + sw >= screenCoord.x && sy < screenCoord.y && sy + sh >= screenCoord.y)

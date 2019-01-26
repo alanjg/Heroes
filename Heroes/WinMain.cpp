@@ -18,14 +18,11 @@ std::shared_ptr<Game> g_game = nullptr;
 std::shared_ptr<InputManager> g_inputManager = nullptr;
 std::shared_ptr<SelectionManager> g_selectionMananger = nullptr;
 std::shared_ptr<ResourceManager> g_resourceManager = nullptr;
-#define MAX_LOADSTRING 100
+const int MAX_LOADSTRING = 100;
 
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
-// Forward declarations of functions included in this code module:
-ATOM				MyRegisterClass(HINSTANCE hInstance);
-BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
@@ -37,7 +34,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// Initialize global strings
 	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadString(hInstance, IDC_HEROES, szWindowClass, MAX_LOADSTRING);
 
@@ -57,7 +53,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return 0;
 	}
 
-	std::string directoryRoot = "c:\\HeroesAnimations\\";
+	std::string directoryRoot = "e:\\code\\HeroesAnimation\\HeroesAnimations\\";
 	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
 	g_renderer->LoadModel(selection);
 
@@ -145,7 +141,6 @@ HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow)
 	if (!RegisterClassEx(&wcex))
 		return E_FAIL;
 
-	// Create window
 	g_hInst = hInstance;
 	RECT rc = { 0, 0, 1920, 1080 };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);

@@ -11,7 +11,7 @@
 #include "SkinnedMeshInstance.h"
 
 ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer)
-	:dataRoot("C:\\Users\\alanga\\Documents\\GitHub\\Heroes\\data\\"),
+	:dataRoot("C:\\Users\\alan_\\Documents\\GitHub\\Heroes\\data\\"),
 	m_renderer(renderer)
 {
 	entityFactory.reset(new EntityFactory());

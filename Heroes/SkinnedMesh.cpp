@@ -1070,7 +1070,7 @@ void SkinnedMesh::RenderModel(int animation, float t, std::vector<XMFLOAT4X4>& a
 			positionAnimation.m128_f32[3] = 1.0;
 			break;
 		case AnimationKeyframes:
-			int frame = t / animations[animation].duration * boneAnimation.positionKeyframes->keyframes.size();
+			int frame = (int)(t / animations[animation].duration * boneAnimation.positionKeyframes->keyframes.size());
 			int currentFrame = frame % boneAnimation.positionKeyframes->keyframes.size();
 			positionAnimation = XMLoadFloat4(&boneAnimation.positionKeyframes->keyframes[currentFrame]);
 			break;
@@ -1095,7 +1095,7 @@ void SkinnedMesh::RenderModel(int animation, float t, std::vector<XMFLOAT4X4>& a
 			orientationAnimation.m128_f32[3] = splineRead[3];
 			break;
 		case AnimationKeyframes:
-			int frame = t / animations[animation].duration * boneAnimation.orientationKeyframes->keyframes.size();
+			int frame = (int)(t / animations[animation].duration * boneAnimation.orientationKeyframes->keyframes.size());
 			int currentFrame = frame % boneAnimation.orientationKeyframes->keyframes.size();
 			orientationAnimation = XMLoadFloat4(&boneAnimation.orientationKeyframes->keyframes[currentFrame]);
 			break;
@@ -1130,7 +1130,7 @@ void SkinnedMesh::RenderModel(int animation, float t, std::vector<XMFLOAT4X4>& a
 
 			break;
 		case AnimationKeyframes:
-			int frame = t / animations[animation].duration * boneAnimation.scaleShearKeyframes->keyframes.size();
+			int frame = (int)(t / animations[animation].duration * boneAnimation.scaleShearKeyframes->keyframes.size());
 			int currentFrame = frame % boneAnimation.scaleShearKeyframes->keyframes.size();
 			scaleShearAnimation = XMLoadFloat4x4(&boneAnimation.scaleShearKeyframes->keyframes[currentFrame]);
 			break;

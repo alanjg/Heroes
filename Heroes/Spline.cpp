@@ -218,7 +218,7 @@ void Spline::EvaluateDegree2(float t, float* result)
 		float* Nj = N[j];
 		int c = 0;
 		size[j] = 0;
-		for (unsigned int i = 0; i + 1 < size[j - 1]; i++)
+		for (int i = 0; i + 1 < size[j - 1]; i++)
 		{
 			float ti = GetKnotClamped(knots, knotCount, startIndex + i);
 			float tij = GetKnotClamped(knots, knotCount, startIndex + i + j);

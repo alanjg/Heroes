@@ -78,7 +78,7 @@ public:
 	ID3D11ShaderResourceView*           g_pTextureRV = NULL;
 	ID3D11SamplerState*                 g_pSamplerLinear = NULL;
 
-	XMFLOAT4X4                            g_Projection;
+	XMFLOAT4X4							g_Projection;
 
 	int animationIndex = 0;
 	bool play = true;
