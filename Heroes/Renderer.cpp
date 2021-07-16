@@ -456,6 +456,17 @@ void Renderer::SetViewport(int width, int height)
 	g_pImmediateContext->RSSetViewports(1, &vp);
 }
 
+void Renderer::SetProjection(int width, int height)
+{
+	// Initialize the projection matrix
+	XMMATRIX projection = XMMatrixPerspectiveFovLH(XM_PIDIV4, width / (float)height, 0.01f, 1000.0f);
+	XMStoreFloat4x4(&g_Projection, projection);
+
+	ProjectionConstantBuffer projectionConstantBuffer;
+	projectionConstantBuffer.mProjection = XMMatrixTranspose(projection);
+	g_pImmediateContext->UpdateSubresource(m_projectionConstantBuffer, 0, NULL, &projectionConstantBuffer, 0, 0);
+}
+
 Renderer::~Renderer()
 {
 	if (g_pImmediateContext) g_pImmediateContext->ClearState();
@@ -615,7 +626,7 @@ bool Renderer::ProjectPickingRayToPlane(int x, int y, CXMVECTOR planePoint, CXMV
 	XMMATRIX P = XMLoadFloat4x4(&g_Projection);
 
 	// Compute picking ray in view space.
-	float vx = (+2.0f*x / m_viewportWidth - 1.0f) / P.r[0].m128_f32[0];
+	float vx = (+2.0f * x / m_viewportWidth - 1.0f) / P.r[0].m128_f32[0];
 	float vy = (-2.0f*y / m_viewportHeight + 1.0f) / P.r[1].m128_f32[1];
 
 	// Ray definition in view space.
@@ -626,15 +637,28 @@ bool Renderer::ProjectPickingRayToPlane(int x, int y, CXMVECTOR planePoint, CXMV
 	XMMATRIX V = XMLoadFloat4x4(&m_camera->GetViewMatrix());
 	XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
 
+	XMMATRIX world = XMMatrixRotationX(-XM_PIDIV2) * XMMatrixTranslation(-0.137041f, -1.8f, -1.06089f);
+	XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(world), world);
 
-	rayOrigin = XMVector3TransformCoord(rayOrigin, invView);
-	rayDir = XMVector3TransformNormal(rayDir, invView);
+	XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
+	toLocal = invView;
+
+	rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
+	rayDir = XMVector3TransformNormal(rayDir, toLocal);
 
 	// Make the ray direction unit length for the intersection tests.
 	rayDir = XMVector3Normalize(rayDir);
 
 	float dist = 0.0f;
-	return XNA::IntersectRayPlane(rayOrigin, rayDir, planePoint, planeNormal, intersectionPoint, &dist);
+	XMVECTOR intersectionPointLocal;
+	bool hit = XNA::IntersectRayPlane(rayOrigin, rayDir, planePoint, planeNormal, intersectionPointLocal, &dist);
+	if (hit)
+	{
+		XMMATRIX toWorld = XMMatrixInverse(&XMMatrixDeterminant(toLocal), toLocal);
+		//intersectionPoint = XMVector3TransformCoord(intersectionPointLocal, toWorld);
+		intersectionPoint = intersectionPointLocal;
+	}
+	return hit;
 }
 
 Entity* Renderer::Pick(int sx, int sy)

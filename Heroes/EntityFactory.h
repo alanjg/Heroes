@@ -1,4 +1,5 @@
 #pragma once
+#include "../GameCore/EntityDefinition.h"
 #include "Entity.h"
 
 struct EntityType
@@ -15,7 +16,7 @@ public:
 	~EntityFactory();
 
 	void Register(const std::string& name, std::shared_ptr<EntityDefinition> entity);
-	std::shared_ptr<EntityDefinition> Lookup(const std::string& name);
+	EntityDefinition* Lookup(const std::string& name);
 
 	std::shared_ptr<Entity> Create(const std::string& name);
 	std::shared_ptr<Entity> Create(int id);

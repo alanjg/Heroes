@@ -10,6 +10,51 @@
 #include "SkinnedMeshInstance.h"
 #include "StaticMeshInstance.h"
 #include "ResourceManager.h"
+#include "NetworkClient.h"
+#include "../GameCore/entity.grpc.pb.h"
+#include "../GameCore/EntityDefinitionManager.h"
+
+#pragma comment(lib,"WS2_32")
+
+#ifdef _DEBUG
+#pragma comment(lib, "zlibd")
+#pragma comment(lib,"libprotobufd")
+#pragma comment(lib,"libprotobuf-lited")
+#else
+#pragma comment(lib, "zlib")
+#pragma comment(lib,"libprotobuf")
+#pragma comment(lib,"libprotobuf-lite")
+#endif // DEBUG
+
+
+#ifdef _WIN64
+#pragma comment(lib,"grpc++_reflection")
+#pragma comment(lib,"grpcpp_channelz")
+#endif
+
+#pragma comment(lib, "address_sorting")
+#pragma comment(lib, "upb")
+#pragma comment(lib, "upb_fastdecode")
+#pragma comment(lib, "upb_handlers")
+#pragma comment(lib, "upb_json")
+#pragma comment(lib, "upb_pb")
+#pragma comment(lib, "upb_reflection")
+#pragma comment(lib, "upb_textformat")
+#pragma comment(lib, "re2")
+#pragma comment(lib, "cares")
+#pragma comment(lib,"abseil_dll")
+#pragma comment(lib,"gpr")
+#pragma comment(lib,"grpc")
+#pragma comment(lib,"grpc_csharp_ext")
+#pragma comment(lib,"grpc_plugin_support")
+#pragma comment(lib,"grpc_unsecure")
+#pragma comment(lib,"grpc_upbdefs")
+#pragma comment(lib,"grpc++")
+#pragma comment(lib,"grpc++_alts")
+#pragma comment(lib,"grpc++_error_details")
+#pragma comment(lib,"grpc++_unsecure")
+#pragma comment(lib, "libssl")
+#pragma comment(lib, "libcrypto")
 
 HINSTANCE g_hInst = nullptr;
 HWND g_hWnd = nullptr;
@@ -18,10 +63,18 @@ std::shared_ptr<Game> g_game = nullptr;
 std::shared_ptr<InputManager> g_inputManager = nullptr;
 std::shared_ptr<SelectionManager> g_selectionMananger = nullptr;
 std::shared_ptr<ResourceManager> g_resourceManager = nullptr;
+std::shared_ptr<EntityDefinitionManager> g_entityDefinitionManager = nullptr;
+std::string g_modelDir = "g:\\code\\HeroesAnimation\\HeroesAnimations\\";
+std::string g_dataDir = "C:\\Users\\alan_\\Documents\\GitHub\\Heroes\\data\\";
+
+NetworkClient* g_networkClient = nullptr;
+bool g_useNetwork = true;
+std::string serverIp = "localhost";
+std::string serverPort = "50051";
 const int MAX_LOADSTRING = 100;
 
-TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
-TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
+TCHAR szTitle[MAX_LOADSTRING];
+TCHAR szWindowClass[MAX_LOADSTRING];
 
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
@@ -31,9 +84,39 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPTSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+	LPWSTR cmdLine = GetCommandLineW();
+	int argCount;
+	LPWSTR* lines;
+	lines = CommandLineToArgvW(cmdLine, &argCount);
+	for (int i = 1; i < argCount; i++)
+	{
+		std::wstringstream cmd(lines[i]);
+		std::wstring arg, value;
+		wchar_t delim = '=';
+		std::getline(cmd, arg, delim);
+		std::getline(cmd, value);
+		wchar_t slash = '/';
+		if (arg.size() > 0 && arg[0] == slash)
+		{
+			arg = arg.substr(1);
+			if (arg == L"modeldir")
+			{
+				g_modelDir.assign(value.begin(), value.end());
+			}
+			else if (arg == L"datadir")
+			{
+				g_dataDir.assign(value.begin(), value.end());
+			}
+			else if (arg == L"server")
+			{
+				serverIp.assign(value.begin(), value.end());
+			}
+		}
+	}
+
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
+	
 	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadString(hInstance, IDC_HEROES, szWindowClass, MAX_LOADSTRING);
 
@@ -41,34 +124,28 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return 0;
 
 	struct stat buffer;
-	std::string dataRoot = "C:\\Users\\alanga\\Documents\\GitHub\\Heroes\\data\\";
-	if (stat(dataRoot.c_str(), &buffer) != 0)
+	if (stat(g_dataDir.c_str(), &buffer) != 0)
 	{
-		dataRoot = "C:\\Users\\alan\\Documents\\GitHub\\Heroes\\data\\";
-		if (stat(dataRoot.c_str(), &buffer) != 0)
-		{
-			MessageBoxA(g_hWnd, "You must have heroes data", "Heroes data directory not found", MB_ICONERROR);
-			return 0;
-		}
+		std::ostringstream message;
+		message << "Cannot find game data in dataDir: " << g_dataDir;
+		MessageBoxA(g_hWnd, message.str().c_str(), "Heroes data directory not found", MB_ICONERROR);
+		return 0;
 	}
 
-	std::string directoryRoot = "c:\\HeroesAnimations\\";
 	
-	if (stat(directoryRoot.c_str(), &buffer) != 0)
+	if (stat(g_modelDir.c_str(), &buffer) != 0)
 	{
-		directoryRoot = "e:\\HeroesAnimations\\";
-		if (stat(directoryRoot.c_str(), &buffer) != 0)
-		{
-			MessageBoxA(g_hWnd, "You must have heroes animation data in c:\\HeroesAnimations or e:\\HeroesAnimations", "HeroesAnimations directory not found", MB_ICONERROR);
-			return 0;
-		}
+		std::ostringstream message;
+		message << "Cannot find animation data in modelDir: " << g_modelDir;
+		MessageBoxA(g_hWnd, message.str().c_str(), "HeroesAnimations directory not found", MB_ICONERROR);
+		return 0;
 	}
 
 	g_game.reset(new Game());
 	g_renderer.reset(new Renderer(g_hInst, g_hWnd));
 	g_selectionMananger.reset(new SelectionManager(g_renderer.get()));
 	g_inputManager.reset(new InputManager(g_game.get(), g_renderer.get(), g_selectionMananger.get()));
-	g_resourceManager.reset(new ResourceManager(g_renderer, dataRoot));
+	g_resourceManager.reset(new ResourceManager(g_renderer, g_dataDir));
 	g_resourceManager->LoadResources();
 	g_game->SetContext(g_renderer.get(), g_selectionMananger.get(), g_inputManager.get(), g_resourceManager.get());
 
@@ -77,7 +154,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return 0;
 	}
 
-	std::string directoryRoot = "e:\\code\\HeroesAnimation\\HeroesAnimations\\";
+	std::string directoryRoot = g_modelDir;
 	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
 	g_renderer->LoadModel(selection);
 
@@ -85,10 +162,21 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	g_renderer->RegisterModelDirectory(modelDirectory);
 	g_renderer->LoadModels(directoryRoot + "ConvertedMap2\\");
 
-	//InitScene();
-	g_game->CreateTestGame();
+	g_entityDefinitionManager.reset(new EntityDefinitionManager());
+	g_entityDefinitionManager->Initialize(g_dataDir);
+
+	InitScene();
+	g_networkClient = new NetworkClient(serverIp, serverPort);
+	if (g_useNetwork)
+	{
+		if (!g_networkClient->InitNetwork())
+		{
+			return 0;
+		}
+	}
+	//g_game->CreateTestGame();
 	static float t = 0.0f;
-	
+	bool initializing = true;
 	// Main message loop
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
@@ -100,6 +188,11 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 		else
 		{
+			if (g_useNetwork)
+			{
+				g_networkClient->CheckNetworkData();
+			}
+			auto lock = g_networkClient->LockNetworkEntityUpdate();
 			static DWORD dwTimeStart = 0;
 			static int frames = 0;
 			static float elapsed = 0.0f;
@@ -131,6 +224,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			g_renderer->BeginRenderPass();
 			g_game->Render();
 			g_selectionMananger->Render();
+
 			triangles += g_renderer->m_rendererdTriangleCount;
 			std::wstringstream text;
 			text.precision(3);
@@ -141,7 +235,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			g_renderer->CompleteRenderPass();
 		}
 	}
-
 	return (int) msg.wParam;
 }
 
@@ -207,6 +300,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (g_renderer != 0)
 		{
 			g_renderer->SetViewport(width, height);
+			//g_renderer->SetProjection(width, height); //doesn't work
 		}
 		break;
 
@@ -265,10 +359,12 @@ void LoadAndInstantiate(const std::string& directory, float x, float y)
 }
 */
 
-/*
+
 void InitScene()
 {
-	std::string directoryRoot = "c:\\HeroesAnimations\\";
+	//std::string directoryRoot = "c:\\HeroesAnimations\\";
+	//std::string directoryRoot = "g:\\Code\\HeroesAnimation\\HeroesAnimations\\";
+	std::string directoryRoot = g_modelDir;
 	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
 	g_renderer->LoadModel(selection);
 
@@ -276,68 +372,86 @@ void InitScene()
 	std::string modelDirectory = directoryRoot + "Converted\\";
 	g_renderer->RegisterModelDirectory(modelDirectory);
 
-	bool renderAllModels = true;
+	bool renderAllModels = false;
 	int limit = 10000;
 
-	if (renderAllModels)
+	if (!g_useNetwork)
 	{
-		//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u0r0");
-		//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u1r0");
-		//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u2r0");
-		//g_renderer->LoadModels(directoryRoot + "Converted\\");
-		g_renderer->LoadModels(directoryRoot + "ConvertedMap2\\");
-		//g_renderer->LoadModels(directoryRoot + "ConvertedMap3\\");
-		//g_renderer->LoadModels(directoryRoot + "ConvertedArenas\\Town\\NewHaven");
-	
-		int c = 0;
-		for each(auto p in g_renderer->GetStaticMeshLookup())
+		if (renderAllModels)
 		{
-			if (p.first == "ArmySelection") continue;
-			StaticMeshInstance* mesh = g_renderer->CreateStaticMeshInstance(p.first);
-			Entity* e = new Entity();
-			std::shared_ptr<Entity> entity(e);
-			mesh->BindEntity(e);
-			entity->Initialize((c / 12) * 12, (c % 12) * 12, mesh);
-			c++;
-			g_game->entities.push_back(entity);
-			if (c == limit) break;
-		}
+			//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u0r0");
+			//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u1r0");
+			//g_renderer->LoadModel(directoryRoot + "ConvertedArenas\\Town\\NewHaven\\Monastery_u2r0");
+			g_renderer->LoadModels(directoryRoot + "Converted\\");
+			//g_renderer->LoadModels(directoryRoot + "ConvertedMap2\\");
+			//g_renderer->LoadModels(directoryRoot + "ConvertedMap3\\");
+			//g_renderer->LoadModels(directoryRoot + "ConvertedArenas\\Town\\NewHaven");
 
-		for each(auto p in g_renderer->GetSkinnedMeshLookup())
+			int c = 0;
+			for each (auto p in g_renderer->GetStaticMeshLookup())
+			{
+				if (p.first == "ArmySelection") continue;
+				StaticMeshInstance* mesh = g_renderer->CreateStaticMeshInstance(p.first);
+				Entity* e = new Entity();
+				std::shared_ptr<Entity> entity(e);
+				mesh->BindEntity(e);
+				entity->Initialize((c / 12) * 12, (c % 12) * 12, 90, mesh);
+				c++;
+				g_game->entities.push_back(entity);
+				if (c == limit) break;
+			}
+
+			for each (auto p in g_renderer->GetSkinnedMeshLookup())
+			{
+				SkinnedMeshInstance* mesh = g_renderer->CreateSkinnedMeshInstance(p.first);
+				Entity* unit = new Entity();
+				unit->canMove = true;
+				mesh->BindEntity(unit);
+				std::shared_ptr<Entity> entity(unit);
+				unit->Initialize((c / 12) * 12, (c % 12) * 12, 90, mesh);
+				c++;
+				g_game->entities.push_back(entity);
+				if (c == limit) break;
+			}
+		}
+		else
 		{
-			SkinnedMeshInstance* mesh = g_renderer->CreateSkinnedMeshInstance(p.first);
-			Entity* unit = new Entity();
-			mesh->BindEntity(unit);
-			std::shared_ptr<Entity> entity(unit);
-			unit->Initialize((c / 12) * 12, (c % 12) * 12, mesh);
-			c++;
-			g_game->entities.push_back(entity);
-			if (c == limit) break;
+			for (int i = 0; i < 20; i++)
+			{
+				for (int j = 0; j < 20; j++)
+				{
+					SkinnedMeshInstance* footmanMesh = g_renderer->CreateSkinnedMeshInstance("Archer");
+					Entity* unit2 = new Entity();
+					unit2->canMove = true;
+					footmanMesh->BindEntity(unit2);
+					std::shared_ptr<Entity> entity2(unit2);
+					unit2->Initialize(i, j, 90, footmanMesh);
+					g_game->entities.push_back(entity2);
+				}
+			}
+
+
+			/*
+			for (int i = 0; i < 3; i++)
+			{
+				SkinnedMeshInstance* angelMesh = g_renderer->CreateSkinnedMeshInstance("Angel");
+				Entity* unit = new Entity();
+				unit->canMove = true;
+				angelMesh->BindEntity(unit);
+				std::shared_ptr<Entity> entity(unit);
+				unit->Initialize((i / 12) * 4, (i % 12) * 4, 90, angelMesh);
+				g_game->entities.push_back(entity);
+			}
+
+
+			SkinnedMeshInstance* dragonMesh = g_renderer->CreateSkinnedMeshInstance("BlackDragon");
+			Entity* unit3 = new Entity();
+			unit3->canMove = true;
+			dragonMesh->BindEntity(unit3);
+			std::shared_ptr<Entity> entity3(unit3);
+			unit3->Initialize(15, 0, 90, dragonMesh);
+			g_game->entities.push_back(entity3);
+			*/
 		}
 	}
-
-	
-	for (int i = 0; i < 3; i++)
-	{
-		SkinnedMeshInstance* angelMesh = g_renderer->CreateSkinnedMeshInstance("Angel");
-		Entity* unit = new Entity();
-		angelMesh->BindEntity(unit);
-		std::shared_ptr<Entity> entity(unit);
-		unit->Initialize((i / 12) * 4, (i % 12) * 4, angelMesh);
-		g_game->entities.push_back(entity);
-	}
-	
-	SkinnedMeshInstance* footmanMesh = g_renderer->CreateSkinnedMeshInstance("Footman");
-	Entity* unit2 = new Entity();
-	footmanMesh->BindEntity(unit2);
-	std::shared_ptr<Entity> entity2(unit2);
-	unit2->Initialize(15, 0, footmanMesh);
-	g_game->entities.push_back(entity2);
-	
-	SkinnedMeshInstance* dragonMesh = g_renderer->CreateSkinnedMeshInstance("BlackDragon");
-	Entity* unit3 = new Entity();
-	dragonMesh->BindEntity(unit3);
-	std::shared_ptr<Entity> entity3(unit3);
-	unit3->Initialize(15, 0, dragonMesh);
-	g_game->entities.push_back(entity3);	
-}*/
+}

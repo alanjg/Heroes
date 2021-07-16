@@ -10,7 +10,13 @@ namespace XdbReader
 {
 	class Program
 	{
-		const string baseFolder = @"E:\Heroes5Models\";
+		const string sourceFolder = @"G:\Code\HeroesAnimation\Heroes5Models\";
+		const string destFolder = @"G:\Code\HeroesAnimation\HeroesAnimations2\";
+		const string gr2converterLocation = @"C:\Users\alan_\Documents\GitHub\Heroes\Release\Gr2Converter.exe";
+
+		static string[] badShotModels = new string[] {
+		};
+
 		static string[] badCreatureModels = new string[] { 
 			//bone count mismatch
 			"T4_BattleRager", 
@@ -111,7 +117,7 @@ namespace XdbReader
 		static void Main(string[] args)
 		{
 			bool loadMap = false;
-			XdbLoader loader = new XdbLoader(baseFolder);
+			XdbLoader loader = new XdbLoader(sourceFolder);
 			if (loadMap)
 			{				
 				loader.LoadMap(@"Maps\Multiplayer\XL1\XL1.xdb");
@@ -121,31 +127,72 @@ namespace XdbReader
 				{
 					if (count == limit) break;
 					if (badMapObjectsModels.Any(n => n == def.name)) continue;
-					ConvertCreature(def, @"e:\HeroesAnimations\ConvertedMap2");
+					ConvertCreature(def, Path.Combine(destFolder, @"ConvertedMap2\"));
 					count++;
 				}
 			}
-			ModelDefinition mod = loader.LoadEffect(@"E:\Heroes5Models\Effects\_(ModelInstance)\Effects\UI\ArmyFlag.xdb");
-			ConvertCreature(mod, @"e:\HeroesAnimations\ConvertedEffects");
+			bool loadFlag = false;
+			if (loadFlag)
+			{
+				string armyFlagFile = Path.Combine(sourceFolder, @"Effects\_(ModelInstance)\Effects\UI\ArmyFlag.xdb");
+				ModelDefinition mod = loader.LoadEffect(armyFlagFile);
+				ConvertCreature(mod, Path.Combine(destFolder, @"ConvertedEffects\"));
+			}
 			//loader.LoadMapObjectDefinition(@"E:\Heroes5Models\MapObjects\Haven\ArchersTower.(AdvMapDwellingShared).xdb");
-	//		LoadAllMapObjects(loader, null);
-	//		foreach (ObjectInstance obj in loader.Map.Objects)
-	//		{
-	//			ConvertCreature(obj.model, @"e:\HeroesAnimations\ConvertedMap2");
-	//		}
-			//ModelDefinition creature = loader.LoadCreature(@"Characters\Creatures\Haven\Archangel.(Character).xdb");
-			//ConvertCreature(creature, @"e:\HeroesAnimations\Converted");
-	//		LoadAllCreatures(loader, null);
-			//LoadAllCreatures(loader, null);
+			//		LoadAllMapObjects(loader, null);
+			//		foreach (ObjectInstance obj in loader.Map.Objects)
+			//		{
+			//			ConvertCreature(obj.model, @"e:\HeroesAnimations\ConvertedMap2");
+			//		}
+			//	ModelDefinition creature = loader.LoadCreature(@"Characters\Creatures\Haven\Archangel.(Character).xdb");
+			//	ConvertCreature(creature, Path.Combine(destFolder, @"Converted\"));
 
-	//		ConvertArenaTownsDirectory(loader, "river_noLM");
+			bool loadShot = true;
+			if (loadShot)
+			{
+				ModelDefinition arrow = loader.LoadShot(@"GameMechanics\Shot\Creatures\Haven\Archer.xdb");
+				ConvertCreature(arrow, Path.Combine(destFolder, @"Converted\"));
+			}
+			LoadAllShots(loader, null);
+	//		LoadAllCreatures(loader, null);
+	//LoadAllCreatures(loader, null);
+
+			//		ConvertArenaTownsDirectory(loader, "river_noLM");
+		}
+
+		static void LoadAllShots(XdbLoader loader, string skipTo)
+		{
+			List<ModelDefinition> shots = new List<ModelDefinition>();
+			string shotFolder = Path.Combine(sourceFolder, @"GameMechanics\Shot");
+			foreach (string file in Directory.GetFiles(shotFolder, "*.xdb", SearchOption.AllDirectories))
+			{
+				ModelDefinition shot = loader.LoadShot(file);
+				if (shot == null) continue;
+				shots.Add(shot);
+
+				// skip to this
+				if (skipTo != null)
+				{
+					if (skipTo == Path.GetFileName(file))
+					{
+						skipTo = null;
+					}
+					else
+					{
+						continue;
+					}
+				}
+				if (badShotModels.Any(n => n == Path.GetFileName(file))) continue;
+
+				ConvertCreature(shot, Path.Combine(destFolder, @"Converted\Shots\"));
+			}
 		}
 
 		static void ConvertArenaTownsDirectory(XdbLoader loader, string skipTo)
 		{
 			string[] skipList = new string[] { "(Texture)", "(Material)", "(Camera)", "-geom", "(ArenaModObject)", "(ArenaLocObject)", "(ArenaEnvObject)", "(ArenaDesc)" };
 			List<ModelDefinition> mapObjects = new List<ModelDefinition>();
-			string mapObjectsFolder = Path.Combine(baseFolder, @"Arenas\Town\NewHaven");
+			string mapObjectsFolder = Path.Combine(sourceFolder, @"Arenas\Town\NewHaven");
 			foreach (string file in Directory.GetFiles(mapObjectsFolder, "*.xdb", SearchOption.AllDirectories))
 			{
 				if (skipList.Any(s => file.Contains(s)))
@@ -171,14 +218,14 @@ namespace XdbReader
 				}
 				if (badArenaTownModels.Any(n => n == mapObject.name)) continue;
 
-				ConvertCreature(mapObject, @"e:\HeroesAnimations\ConvertedArenas\Town\NewHaven");
+				ConvertCreature(mapObject, Path.Combine(destFolder, @"ConvertedArenas\Town\NewHaven"));
 			}
 		}
 
 		static void LoadAllMapObjects(XdbLoader loader, string skipTo)
 		{
 			List<ModelDefinition> mapObjects = new List<ModelDefinition>();
-			string mapObjectsFolder = Path.Combine(baseFolder, @"MapObjects");
+			string mapObjectsFolder = Path.Combine(sourceFolder, @"MapObjects");
 			foreach (string file in Directory.GetFiles(mapObjectsFolder, "*.xdb", SearchOption.AllDirectories))
 			{
 				if (file.Contains("(Texture)") || file.Contains("(Material)"))
@@ -204,14 +251,14 @@ namespace XdbReader
 				}
 				if (badMapObjectsModels.Any(n => n == mapObject.name)) continue;
 
-				ConvertCreature(mapObject, @"e:\HeroesAnimations\ConvertedMap3");
+				ConvertCreature(mapObject, Path.Combine(destFolder, @"ConvertedMap3"));
 			}
 		}
 
 		static void LoadAllCreatures(XdbLoader loader, string skipTo)
 		{
 			List<ModelDefinition> creatures = new List<ModelDefinition>();
-			string creatureFolder = Path.Combine(baseFolder, @"Characters\Creatures");
+			string creatureFolder = Path.Combine(sourceFolder, @"Characters\Creatures");
 			foreach (string file in Directory.GetFiles(creatureFolder, "*.xdb", SearchOption.AllDirectories))
 			{
 				if (file.Contains("_LOD") || file.Contains("(CharacterView)") || !file.Contains("(Character)") || file.Contains("Renegades"))
@@ -237,13 +284,13 @@ namespace XdbReader
 				}
 				if (badCreatureModels.Any(n => n == creature.name)) continue;
 
-				ConvertCreature(creature, @"e:\HeroesAnimations\Converted");
+				ConvertCreature(creature, Path.Combine(destFolder, @"Converted\"));
 			}
 		}
 
 		static void ConvertCreature(ModelDefinition model, string targetDirectory)
 		{
-			string binFolder = Path.Combine(baseFolder, "bin");
+			string binFolder = Path.Combine(sourceFolder, "bin");
 			string modelsFolder = Path.Combine(binFolder, "Geometries");
 			string skeletonFolder = Path.Combine(binFolder, "Skeletons");
 			string animationsFolder = Path.Combine(binFolder, "animations");
@@ -349,21 +396,21 @@ namespace XdbReader
 		static void ConvertGr2File(string source, string dest, string type)
 		{
 			string args = type + " \"" + source + "\" \"" + dest + "\"";
-			Process p = Process.Start(@"c:\code\heroes\release\Gr2Converter.exe", args);
+			Process p = Process.Start(gr2converterLocation, args);
 			p.WaitForExit();
 		}
 
 		static void ConvertSkinnedSMDFile(string source, string dest)
 		{
 			string args = "skinnedmesh" + " \"" + source + "\" \"" + dest + "\"";
-			Process p = Process.Start(@"c:\code\heroes\release\Gr2Converter.exe", args);
+			Process p = Process.Start(gr2converterLocation, args);
 			p.WaitForExit();
 		}
 
 		static void ConvertStaticSMDFile(string source, string dest)
 		{
 			string args = "staticmesh" + " \"" + source + "\" \"" + dest + "\"";
-			Process p = Process.Start(@"c:\code\heroes\release\Gr2Converter.exe", args);
+			Process p = Process.Start(gr2converterLocation, args);
 			p.WaitForExit();
 		}
 	}

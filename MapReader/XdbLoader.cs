@@ -41,6 +41,38 @@ namespace XdbReader
 
 		}
 
+		public ModelDefinition LoadShot(string file)
+		{
+			string absolutePath = file;
+			if (!Path.IsPathRooted(file))
+			{
+				absolutePath = Path.Combine(this.RootDirectory, file);
+			}
+
+			XDocument doc = XDocument.Load(absolutePath);
+			XElement root = doc.Element("Shot");
+			XElement missileShot = root.Element("MissileShot");
+			
+			if (missileShot != null)
+			{
+				XElement model = missileShot.Element("Model");
+				XAttribute modelHref = model.Attribute("href");
+				// could read speed, offset, height
+				if (modelHref != null)
+				{
+					FileLink modelLink = new FileLink(this.RootDirectory, file, modelHref.Value);
+					XElement modelElement = this.documentManager.GetLinkedElement(modelLink);
+					ModelDefinition def = new ModelDefinition();
+					this.LoadMapObjectModel(def, modelElement, modelLink.File);
+
+					string fileName = Path.GetFileName(file);
+					def.name = fileName.Substring(0, fileName.IndexOf("."));
+					return def;
+				}
+			}
+			return null;
+		}
+
 		public ModelDefinition LoadCreature(string file)
 		{
 			string absolutePath = file;

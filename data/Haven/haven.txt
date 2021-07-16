@@ -1,5 +1,5 @@
 {
 	"Name": "Haven",
-	"Units": ["Peasant", "Footman", "Archer"],
+	"Units": ["Peasant", "Footman", "Archer", "Griffin", "Cleric", "Angel"],
 	"Structures": ["TownHall", "Barracks"]
 }

@@ -93,6 +93,7 @@ public:
 	HRESULT CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut);
 	HRESULT InitShaders(WCHAR* file, ID3D11VertexShader** vertexShader, D3D11_INPUT_ELEMENT_DESC* layout, UINT numElements, ID3D11InputLayout** inputLayout, ID3D11PixelShader** pixelShader);
 	void SetViewport(int width, int height);
+	void SetProjection(int width, int height);
 
 	ID3D11Buffer** GetViewTransformBuffer();
 	ID3D11Buffer** GetProjectionTransformBuffer();

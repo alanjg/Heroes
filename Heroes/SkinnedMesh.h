@@ -82,6 +82,8 @@ struct Animation
 
 	// indexed by bone
 	std::vector<BoneAnimation> boneAnimations;
+
+	std::string soundFile;
 };
 
 struct Bone
@@ -138,6 +140,6 @@ public:
 	~SkinnedMesh();
 	HRESULT CreateModelGeometry(const std::string& directoryRoot);
 	HRESULT LoadVertexBuffer(std::vector<SkinnedModelTriangle>& triangles, MeshPart& meshPart);
-	void RenderModel(int animation, float t, std::vector<XMFLOAT4X4>& accumulatedBoneTransforms, ID3D11Buffer* skinnedModelMatrices, ID3D11Buffer* worldTransformBuffer, CBSkinnedMatrices* boneMatricesTransformed);
+	void RenderModel(int animation, float t, bool cycle, std::vector<XMFLOAT4X4>& accumulatedBoneTransforms, ID3D11Buffer* skinnedModelMatrices, ID3D11Buffer* worldTransformBuffer, CBSkinnedMatrices* boneMatricesTransformed);
 
 };

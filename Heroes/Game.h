@@ -20,6 +20,7 @@ public:
 	Game();
 	void SetContext(Renderer* renderer, SelectionManager* selectionManager, InputManager* inputManager, ResourceManager* resourceManager);
 	std::vector<std::shared_ptr<Entity>> entities;
+	std::unordered_map<int, std::shared_ptr<Entity>> entityMap;
 	void Update(float elapsedTime);
 	void Render();
 

@@ -14,13 +14,16 @@ private:
 	std::vector<XMFLOAT4X4> m_accumulatedBoneTransforms;
 	int m_activeAnimation;
 	float m_activeAnimationTime;
+	bool m_cycleActiveAnimation;
 public:
 	SkinnedMeshInstance(Renderer* renderer);
 	HRESULT BindMesh(SkinnedMesh* mesh);
 
 	virtual void RenderModel();
-	void SetAnimation(int animation, float t);
-	void SetAnimation(std::string animation, float t);
+	void SetAnimation(int animation, float t, bool cycle=true);
+	void SetAnimation(const std::string& animation, float t, bool cycle=true);
+	void PlayAnimationSound(int animation);
+	void PlayAnimationSound(const std::string& animation);
 	
 	virtual void WriteGeometry(XMMATRIX* transform);
 	virtual bool Pick(XMVECTOR rayOrigin, XMVECTOR rayDirection, float& tMin);

@@ -3,10 +3,10 @@
 #include "Cost.h"
 #include "EntityAction.h"
 
-struct EntityDefinition
+struct EntityDefinition3
 {
-	EntityDefinition();
-	~EntityDefinition();
+	EntityDefinition3();
+	~EntityDefinition3();
 
 	std::string name;
 	std::string alias;
@@ -25,6 +25,6 @@ struct EntityDefinition
 	int buildTime;
 	Cost cost;
 
-	std::vector<std::shared_ptr<EntityDefinition>> productionOptions;
+	std::vector<std::shared_ptr<EntityDefinition3>> productionOptions;
 	std::vector<EntityActionType> actions;
 };

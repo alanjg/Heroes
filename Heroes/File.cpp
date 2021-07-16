@@ -13,8 +13,15 @@ std::vector<std::string> GetFilesInDirectory(const std::string& directory, bool 
 	}
 
 	do {
-		const std::wstring file_name = file_data.cFileName;
-		const std::wstring full_file_name = wdirectory + L"/" + file_name;
+		std::wstring file_name = file_data.cFileName;
+		std::wstring full_file_name = wdirectory;
+		if (!(wdirectory[wdirectory.size() - 1] == L'/' || wdirectory[wdirectory.size() - 1] == L'\\'))
+		{
+			full_file_name = full_file_name + L"/";
+		}
+		
+		full_file_name = full_file_name + file_name;
+
 		const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
 		if (file_name[0] == '.')

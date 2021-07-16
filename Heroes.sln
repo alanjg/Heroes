@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Heroes", "Heroes\Heroes.vcxproj", "{D905C0E0-5B03-4E6A-8EFB-70DE37416AB6}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gr2Converter", "Gr2Converter\Gr2Converter.vcxproj", "{CEB5A0AC-A812-4101-9374-7B03812228B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{140FD70C-B7E8-4C7C-895E-99033724D31D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameCore", "GameCore\GameCore.vcxproj", "{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameServer", "GameServer\GameServer.vcxproj", "{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,34 @@ Global
 		{CEB5A0AC-A812-4101-9374-7B03812228B7}.Release|Win32.ActiveCfg = Release|Win32
 		{CEB5A0AC-A812-4101-9374-7B03812228B7}.Release|Win32.Build.0 = Release|Win32
 		{CEB5A0AC-A812-4101-9374-7B03812228B7}.Release|x64.ActiveCfg = Release|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|Win32.Build.0 = Debug|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|x64.ActiveCfg = Debug|x64
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Debug|x64.Build.0 = Debug|x64
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|Any CPU.ActiveCfg = Release|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|Win32.ActiveCfg = Release|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|Win32.Build.0 = Release|Win32
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|x64.ActiveCfg = Release|x64
+		{9DC6EFB7-8ECE-47FB-836D-9EB232C44DB1}.Release|x64.Build.0 = Release|x64
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|Win32.Build.0 = Debug|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|x64.ActiveCfg = Debug|x64
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Debug|x64.Build.0 = Debug|x64
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|Win32.ActiveCfg = Release|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|Win32.Build.0 = Release|Win32
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|x64.ActiveCfg = Release|x64
+		{BD4C4667-14FB-49CC-93C1-31A4663FEAF1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

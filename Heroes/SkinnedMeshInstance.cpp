@@ -4,6 +4,8 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "Collision.h"
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 using namespace std;
 
 SkinnedMeshInstance::SkinnedMeshInstance(Renderer* renderer)
@@ -47,23 +49,44 @@ void SkinnedMeshInstance::RenderModel()
 	cb.mWorld = XMMatrixTranspose(transform);
 	m_renderer->g_pImmediateContext->UpdateSubresource(m_worldTransformConstantBuffer, 0, NULL, &cb, 0, 0);
 
-	m_mesh->RenderModel(m_activeAnimation, m_activeAnimationTime, m_accumulatedBoneTransforms, m_skinnedModelMatrices, m_worldTransformConstantBuffer, &m_boneMatricesTransformed);
+	m_mesh->RenderModel(m_activeAnimation, m_activeAnimationTime, m_cycleActiveAnimation, m_accumulatedBoneTransforms, m_skinnedModelMatrices, m_worldTransformConstantBuffer, &m_boneMatricesTransformed);
 }
 
-void SkinnedMeshInstance::SetAnimation(int animation, float t)
+void SkinnedMeshInstance::SetAnimation(int animation, float t, bool cycle)
 {
 	m_activeAnimation = animation;
 	m_activeAnimationTime = t;
+	m_cycleActiveAnimation = cycle;
 }
 
-void SkinnedMeshInstance::SetAnimation(std::string animation, float t)
+void SkinnedMeshInstance::SetAnimation(const std::string& animation, float t, bool cycle)
 {
 	int index = 0;
 	for each(const Animation& a in m_mesh->animations)
 	{
 		if (a.name == animation)
 		{
-			SetAnimation(index, t);
+			SetAnimation(index, t, cycle);
+		}
+		index++;
+	}
+}
+
+void SkinnedMeshInstance::PlayAnimationSound(int animation)
+{
+	std::string soundFile = m_mesh->animations[animation].soundFile;
+	std::wstring wSoundFile(soundFile.begin(), soundFile.end());
+	PlaySound(wSoundFile.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void SkinnedMeshInstance::PlayAnimationSound(const std::string& animation)
+{
+	int index = 0;
+	for each (const Animation & a in m_mesh->animations)
+	{
+		if (a.name == animation)
+		{
+			PlayAnimationSound(index);
 		}
 		index++;
 	}

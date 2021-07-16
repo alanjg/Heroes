@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package heroes;
+
+service HeroesServer {
+  rpc ProcessClientCommand(ClientCommand) returns (ClientCommandResult) {}
+  rpc UpdateState(UpdateStateRequest) returns (stream ServerState) {}
+  rpc CreateGame(CreateGameRequest) returns (CreateGameResponse) {}
+  rpc JoinGame(JoinGameRequest) returns (JoinGameResponse) {}
+}
+
+message CreateGameRequest
+{
+	int32 numPlayers = 1;
+}
+
+message CreateGameResponse
+{
+	int32 id = 1;
+}
+
+message JoinGameRequest
+{
+	int32 gameId = 1;
+	string player = 2;
+}
+
+message JoinGameResponse
+{
+	int32 playerId = 1;
+}
+
+message Entity {
+  int32 controllingPlayer = 1;
+  int32 id = 2;
+  int32 entityType = 3;
+  float positionX = 4;
+  float positionY = 5;
+  float positionZ = 6;
+  float velocityX = 7;
+  float velocityY = 8;
+  float velocityZ = 9;
+  float orientation = 10;
+  float targetPointX = 11;
+  float targetPointY = 12;
+  float targetPointZ = 13;
+
+  enum Status {
+		IDLE = 0;
+		MOVING = 1;
+		ATTACKING = 2;
+		ATTACKED = 3;
+		SPECIAL = 4;
+		DYING = 5;
+		DEAD = 6;
+  }
+  Status status = 14;
+}
+
+message ClientCommand
+{
+	enum Command {
+		NONE = 0;
+		MOVE_TO_POINT = 1;
+		FOLLOW_UNIT = 2;
+		ATTACK_UNIT = 3;
+		ATTACK_POINT = 4;
+		STOP = 5;
+		HOLD = 6;
+		SPECIAL = 7;
+	}
+	Command command = 1;
+	int32 unitId = 2;
+	int32 targetParameter = 3;
+	float targetPointX = 4;
+	float targetPointY = 5;
+	float targetPointZ = 6;
+	int32 targetId = 7;
+	int32 playerId = 8;
+}
+
+message ClientCommandResult
+{
+ //empty
+}
+
+message UpdateStateRequest
+{
+	int32 playerId = 1;
+}
+
+message ServerState
+{
+	repeated Entity entities = 1;
+}

@@ -22,31 +22,32 @@
     <ProjectGuid>{D905C0E0-5B03-4E6A-8EFB-70DE37416AB6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Heroes</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -68,15 +69,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCPKG_ROOT)/grpc_x86-windows/include;$(VCPKG_ROOT)/protobuf_x86-windows/include;$(VCPKG_ROOT)/abseil_x86-windows/include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(VCPKG_ROOT)/grpc_x86-windows/debug/lib;$(VCPKG_ROOT)/protobuf_x86-windows/debug/lib;$(VCPKG_ROOT)/abseil_x86-windows/debug/lib;$(VCPKG_ROOT)/upb_x86-windows/debug/lib;$(VCPKG_ROOT)/c-ares_x86-windows/debug/lib;$(VCPKG_ROOT)/re2_x86-windows/debug/lib;$(VCPKG_ROOT)/zlib_x86-windows/debug/lib;$(VCPKG_ROOT)/openssl_x86-windows/debug/lib;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCPKG_ROOT)/grpc_x86-windows/include;$(VCPKG_ROOT)/protobuf_x86-windows/include;$(VCPKG_ROOT)/abseil_x86-windows/include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(VCPKG_ROOT)/grpc_x86-windows/lib;$(VCPKG_ROOT)/protobuf_x86-windows/lib;$(VCPKG_ROOT)/abseil_x86-windows/lib;$(VCPKG_ROOT)/upb_x86-windows/lib;$(VCPKG_ROOT)/c-ares_x86-windows/lib;$(VCPKG_ROOT)/re2_x86-windows/lib;$(VCPKG_ROOT)/zlib_x86-windows/lib;$(VCPKG_ROOT)/openssl_x86-windows/lib;</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCPKG_ROOT)/grpc_x64-windows/include;$(VCPKG_ROOT)/protobuf_x64-windows/include;$(VCPKG_ROOT)/abseil_x64-windows/include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(VCPKG_ROOT)/grpc_x64-windows/debug/lib;$(VCPKG_ROOT)/protobuf_x64-windows/debug/lib;$(VCPKG_ROOT)/abseil_x64-windows/debug/lib;$(VCPKG_ROOT)/upb_x64-windows/debug/lib;$(VCPKG_ROOT)/c-ares_x64-windows/debug/lib;$(VCPKG_ROOT)/re2_x64-windows/debug/lib;$(VCPKG_ROOT)/zlib_x64-windows/debug/lib;$(VCPKG_ROOT)/openssl_x64-windows/debug/lib;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCPKG_ROOT)/grpc_x64-windows/include;$(VCPKG_ROOT)/protobuf_x64-windows/include;$(VCPKG_ROOT)/abseil_x64-windows/include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(VCPKG_ROOT)/grpc_x64-windows/lib;$(VCPKG_ROOT)/protobuf_x64-windows/lib;$(VCPKG_ROOT)/abseil_x64-windows/lib;$(VCPKG_ROOT)/upb_x64-windows/lib;$(VCPKG_ROOT)/c-ares_x64-windows/lib;$(VCPKG_ROOT)/re2_x64-windows/lib;$(VCPKG_ROOT)/zlib_x64-windows/lib;$(VCPKG_ROOT)/openssl_x64-windows/lib;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -156,7 +165,6 @@
     <ClInclude Include="EntityDefinition.h" />
     <ClInclude Include="EntityDescriptor.h" />
     <ClInclude Include="EntityFactory.h" />
-    <ClInclude Include="Faction.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameParameters.h" />
@@ -166,6 +174,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapTemplate.h" />
     <ClInclude Include="MeshInstance.h" />
+    <ClInclude Include="NetworkClient.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="StaticMesh.h" />
@@ -197,7 +206,6 @@
     <ClCompile Include="EntityDefinition.cpp" />
     <ClCompile Include="EntityDescriptor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
-    <ClCompile Include="Faction.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameParameters.cpp" />
@@ -207,6 +215,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapTemplate.cpp" />
     <ClCompile Include="MeshInstance.cpp" />
+    <ClCompile Include="NetworkClient.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
@@ -247,13 +256,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent>true</DeploymentContent>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="StaticMesh.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
+      <DeploymentContent>true</DeploymentContent>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameCore\GameCore.vcxproj">
+      <Project>{9dc6efb7-8ece-47fb-836d-9eb232c44db1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

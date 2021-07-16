@@ -8,6 +8,8 @@
 #include "EntityAction.h"
 #include "InputPlayerController.h"
 #include "Player.h"
+#include "WinMain.h"
+#include "NetworkClient.h"
 
 InputManager::InputManager(Game* game, Renderer* renderer, SelectionManager* selectionManager) :
 	m_game(game), m_renderer(renderer), m_selectionManager(selectionManager)
@@ -24,7 +26,46 @@ void InputManager::HandleKey(int key)
 {
 	switch (key)
 	{
-	
+	case 's':
+	case 'S':
+		for each (auto e in m_selectionManager->selection)
+		{
+			if (g_useNetwork)
+			{
+				g_networkClient->SendStopCommand(e->entityId);
+			}
+			else
+			{
+				e->Stop();
+			}
+		}
+		break;
+	case 'h':
+	case 'H':
+
+		for each (auto e in m_selectionManager->selection)
+		{
+			if (g_useNetwork)
+			{
+				g_networkClient->SendHoldCommand(e->entityId);
+			}
+			else
+			{
+				e->Stop();
+			}
+		}
+		break;
+	case 'a':
+	case 'A':
+		for each (auto e in m_selectionManager->selection)
+		{
+			if (!g_useNetwork)
+			{
+				e->NextIdleAnimation();
+			}
+		}
+	default:
+		break;
 	}
 }
 
@@ -34,19 +75,19 @@ void InputManager::Update(float elapsedTime)
 	float dx = 0;
 	float dz = 0;
 	// move camera
-	if (GetAsyncKeyState('W'))
+	if (GetAsyncKeyState(VK_UP))
 	{
 		dz += distance;
 	}
-	if (GetAsyncKeyState('A'))
+	if (GetAsyncKeyState(VK_LEFT))
 	{
 		dx -= distance;
 	}
-	if (GetAsyncKeyState('S'))
+	if (GetAsyncKeyState(VK_DOWN))
 	{
 		dz -= distance;
 	}
-	if (GetAsyncKeyState('D'))
+	if (GetAsyncKeyState(VK_RIGHT))
 	{
 		dx += distance;
 	}
@@ -96,19 +137,31 @@ void InputManager::HandleMouseLeftButtonUp(int x, int y)
 void InputManager::HandleMouseRightButtonDown(int x, int y)
 {
 	Entity* hitElement = m_renderer->Pick(x, y);
-	if (hitElement != nullptr)
+	if (hitElement != nullptr) // disable hitting other elements for now
 	{
 		// attack hit element
 		for each(auto e in m_selectionManager->selection)
 		{
-			for each(auto p in m_playerController->GetPlayer()->GetEntities())
+			for each (auto p in m_game->entities)
+			//for each(auto p in m_playerController->GetPlayer()->GetEntities())
 			{
 				if (p.get() == e)
 				{
 					if (e->CanMove())
 					{
-						std::shared_ptr<EntityAction> action(new EntityAttackAction(hitElement, e));
-						e->currentAction = action;
+						if (g_useNetwork)
+						{
+							// send command to move to x
+							g_networkClient->SendAttackUnitCommand(e->entityId, hitElement->entityId);
+						}
+						else
+						{
+							e->Stop();
+							e->RangeAttack(hitElement->x, hitElement->y);
+							//std::shared_ptr<EntityAction> action(new EntityAttackAction(hitElement, e));
+							//e->currentAction = action;
+						}
+
 					}
 					break;
 				}
@@ -119,13 +172,16 @@ void InputManager::HandleMouseRightButtonDown(int x, int y)
 	{
 		XMFLOAT4 planePointf;
 		planePointf.x = 0;
-		planePointf.y = 0;
+		//planePointf.y = 0; 
+		planePointf.y = -1.8f;// Offset to align with model offset
 		planePointf.z = 0;
+		planePointf.w = 1.0;
 		XMVECTOR planePoint = XMLoadFloat4(&planePointf);
 		XMFLOAT4 planeNormalf;
 		planeNormalf.x = 0;
 		planeNormalf.y = 1;
 		planeNormalf.z = 0;
+		planeNormalf.w = 0;
 		XMVECTOR planeNormal = XMLoadFloat4(&planeNormalf);
 
 		XMFLOAT4 pf;
@@ -135,14 +191,23 @@ void InputManager::HandleMouseRightButtonDown(int x, int y)
 			XMStoreFloat4(&pf, p);
 			for each(auto e in m_selectionManager->selection)
 			{
-				for each(auto p in m_playerController->GetPlayer()->GetEntities())
+//				for each(auto p in m_playerController->GetPlayer()->GetEntities())
+				for each (auto p in m_game->entities)
 				{
 					if (p.get() == e)
 					{
 						if (e->CanMove())
 						{
-							e->Stop();
-							e->WalkToPoint(pf.x, pf.z);
+							if (g_useNetwork)
+							{
+								// send command to move to x
+								g_networkClient->SendMoveCommand(e->entityId, pf.x, pf.z);
+							}
+							else
+							{
+								e->Stop();
+								e->WalkToPoint(pf.x, pf.z);
+							}
 						}
 					}
 				}

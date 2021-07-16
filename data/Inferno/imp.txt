@@ -1,13 +1,28 @@
 {
 	"Name": "Imp",
-	"Alias": "Worker",
-	"Size": 0.8,
-	"Speed": 1.4,
-	"Attack": 1,
-	"Defense": 1,
-	"HitPoints": 10,
-	"Cost": { "Gold": 80 },
-	"BuildTime": 16,
+	"Alias": "tier1",
 	"ModelName": "Imp",
-	"Actions": [ "Move", "Stop", "Hold", "Attack", "Build", "Repair" ]
+
+	"MoveSpeed": 4.0,	
+
+	"Size": 1,
+
+	"AttackHitTime": 1.7,
+	"AttackDuration": 2.1,
+	"MeleeAttackName": "attack00",
+
+	"AttackLeaveRange": 0.3,
+	"AttackValue": 5,
+	"DamageLow": 3,
+	"DamageHigh": 6,
+	
+	"HasRangedAttack": false,
+
+	"AttackedDuration": 1.6,
+	"DeathDuration": 2,
+
+	"AggroRange": 15,
+	
+	"DefenseValue": 3,
+	"HitPoints": 30
 }

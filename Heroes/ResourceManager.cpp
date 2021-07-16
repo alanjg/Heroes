@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ResourceManager.h"
 #include "File.h"
-#include "Faction.h"
+#include "../GameCore/Faction.h"
 #include "EntityFactory.h"
 #include "MapTemplate.h"
 #include "Entity.h"
@@ -11,9 +11,9 @@
 #include "SkinnedMeshInstance.h"
 
 ResourceManager::ResourceManager(std::shared_ptr<Renderer> renderer, const std::string& dataRoot)
-	:m_dataRoot(dataRoot),
-	m_renderer(renderer)
+	:m_dataRoot(dataRoot), m_renderer(renderer)
 {
+	//if(dataRoot[dataRoot])
 	entityFactory.reset(new EntityFactory());
 }
 
@@ -23,9 +23,9 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::LoadFaction(const std::string& factionName)
 {
-	std::shared_ptr<Faction> faction(new Faction(entityFactory));
-	faction->LoadFromDirectory(factionName, m_dataRoot + factionName + "\\");
-	factions[factionName] = faction;
+	//std::shared_ptr<Faction> faction(new Faction(entityFactory));
+	//faction->LoadFromDirectory(factionName, m_dataRoot + factionName + "\\");
+	//factions[factionName] = faction;
 }
 
 void ResourceManager::LoadResources()
@@ -34,7 +34,7 @@ void ResourceManager::LoadResources()
 	std::string factionName;
 	while (infile >> factionName)
 	{
-		LoadFaction(factionName);
+		//LoadFaction(factionName);
 	}
 
 	std::ifstream mapsInfile(m_dataRoot + "maps.txt");
@@ -77,10 +77,10 @@ std::shared_ptr<Entity> ResourceManager::InstantiateEntity(std::shared_ptr<Entit
 std::shared_ptr<Entity> ResourceManager::InstantiateEntity(std::shared_ptr<EntityDescriptor> entityDescriptor, Faction* faction)
 {
 	std::string meshName;
-	std::shared_ptr<EntityDefinition> entityDefinition;
+	EntityDefinition* entityDefinition = nullptr;
 	if (entityDescriptor->name.size() == 0)
 	{
-		entityDefinition = faction->ResolveAliasedEntityDefinition(entityDescriptor->alias);
+		//entityDefinition = faction->ResolveAliasedEntityDefinition(entityDescriptor->alias);
 	}
 	else
 	{
@@ -93,8 +93,8 @@ std::shared_ptr<Entity> ResourceManager::InstantiateEntity(std::shared_ptr<Entit
 		mesh = m_renderer->CreateStaticMeshInstance(entityDefinition->modelName);
 	}
 
-	std::shared_ptr<Entity> unit(new Entity(*entityDefinition.get()));
-	mesh->BindEntity(unit.get());
+	Entity* unit = new Entity();
+	mesh->BindEntity(unit);
 	unit->Initialize((float)entityDescriptor->startX, (float)entityDescriptor->startY, (float)entityDescriptor->orientation, mesh);
-	return unit;
+	return std::shared_ptr<Entity>(unit);
 }

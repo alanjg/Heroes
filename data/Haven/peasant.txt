@@ -1,11 +1,28 @@
 {
 	"Name": "Peasant",
-	"Alias": "Worker",
-	"Size": 1.0,
-	"Speed": 1.0,
-	"Attack": 1,
-	"Defense": 1,
-	"HitPoints": 5,
+	"Alias": "tier1",
 	"ModelName": "Peasant",
-	"Actions": [ "Move", "Stop", "Hold", "Attack", "Build", "Repair" ]
+
+	"MoveSpeed": 3.0,	
+
+	"Size": 0.75,
+
+	"AttackHitTime": 1.7,
+	"AttackDuration": 2.1,
+	"MeleeAttackName": "attack00",
+
+	"AttackLeaveRange": 0.3,
+	"AttackValue": 5,
+	"DamageLow": 3,
+	"DamageHigh": 6,
+	
+	"HasRangedAttack": false,
+
+	"AttackedDuration": 1.6,
+	"DeathDuration": 2,
+
+	"AggroRange": 15,
+	
+	"DefenseValue": 3,
+	"HitPoints": 25
 }

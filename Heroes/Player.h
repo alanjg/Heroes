@@ -1,5 +1,5 @@
 #pragma once
-#include "Faction.h"
+#include "../GameCore/Faction.h"
 
 class Entity;
 class Structure;

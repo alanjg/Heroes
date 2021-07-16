@@ -1,13 +1,33 @@
 {
 	"Name": "Succubus",
-	"Alias": "Succubus",
-	"Size": 0.8,
-	"Speed": 1.4,
-	"Attack": 5,
-	"Defense": 5,
-	"HitPoints": 20,
-	"Cost": { "Gold": 80 },
-	"BuildTime": 16,
+	"Alias": "tier2",
 	"ModelName": "Succubus",
-	"Actions": [ "Move", "Stop", "Hold", "Attack" ]
+
+	"MoveSpeed": 2.0,	
+
+	"Size": 1,
+
+	"AttackHitTime": 1.7,
+	"AttackDuration": 2.1,
+	"MeleeAttackName": "attack00",
+
+	"AttackLeaveRange": 0.3,
+	"AttackValue": 5,
+	"DamageLow": 3,
+	"DamageHigh": 6,
+	
+	"HasRangedAttack": true,
+	"RangedAttackRange": 10,
+	"RangedAttackHitTime": 3.5,
+	"RangedAttackDuration": 4.0,
+	"RangedAttackName": "rangedattack",
+
+
+	"AttackedDuration": 1.6,
+	"DeathDuration": 2,
+
+	"AggroRange": 15,
+	
+	"DefenseValue": 3,
+	"HitPoints": 30
 }

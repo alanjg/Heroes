@@ -889,6 +889,12 @@ HRESULT SkinnedMesh::CreateModelGeometry(const std::string& directoryRoot)
 			LoadAnimation(animation, anim, bones);
 		}
 
+		string soundFile = file;
+		int soundDotIndex = soundFile.find_last_of('.');
+		soundFile = soundFile.substr(0, soundDotIndex) + ".wav";
+
+		animation.soundFile = soundFile;
+
 		mesh.animations.push_back(animation);
 	}	
 	/*
@@ -1025,7 +1031,7 @@ ID3D11Buffer* SkinnedMesh::LoadVertexBuffer2(SkinnedMeshVertex* vertices, int ve
 	return pBuffer;
 }
 
-void SkinnedMesh::RenderModel(int animation, float t, std::vector<XMFLOAT4X4>& accumulatedBoneTransforms, ID3D11Buffer* skinnedModelMatrices, ID3D11Buffer* worldTransformBuffer, CBSkinnedMatrices* boneMatricesTransformed)
+void SkinnedMesh::RenderModel(int animation, float t, bool cycle, std::vector<XMFLOAT4X4>& accumulatedBoneTransforms, ID3D11Buffer* skinnedModelMatrices, ID3D11Buffer* worldTransformBuffer, CBSkinnedMatrices* boneMatricesTransformed)
 {
 	if (animations.size() == 0)
 	{
@@ -1034,9 +1040,14 @@ void SkinnedMesh::RenderModel(int animation, float t, std::vector<XMFLOAT4X4>& a
 	animation = animation % animations.size();
 	
 	// scale t in range
-	while (t >= animations[animation].duration)
+	if (cycle)
 	{
-		t -= animations[animation].duration;
+		float loops = floor(t / animations[animation].duration);
+		t -= loops * animations[animation].duration;
+	}
+	else
+	{
+		t = std::min(animations[animation].duration, t);
 	}
 	
 

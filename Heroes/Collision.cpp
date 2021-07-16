@@ -1209,6 +1209,7 @@ namespace XNA
 		*pDist = t;
 		XMVECTOR tV;
 		tV.m128_f32[0] = t;
+		tV.m128_f32[1] = t;
 		tV.m128_f32[2] = t;
 		tV.m128_f32[3] = t;
 

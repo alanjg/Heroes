@@ -2,11 +2,11 @@
 #include "EntityDefinition.h"
 
 
-EntityDefinition::EntityDefinition()
+EntityDefinition3::EntityDefinition3()
 {
 }
 
 
-EntityDefinition::~EntityDefinition()
+EntityDefinition3::~EntityDefinition3()
 {
 }

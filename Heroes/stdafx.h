@@ -10,6 +10,7 @@
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 // Windows Header Files:
 #include <windows.h>
+#include <shellapi.h>
 #undef min
 #undef max
 #include <d3d11.h>
@@ -35,4 +36,9 @@
 #include <sys/stat.h>
 #include <thread>
 
-// TODO: reference additional headers your program requires here
+
+#include <grpc/grpc.h>
+#include <grpcpp/channel.h>
+#include <grpcpp/client_context.h>
+#include <grpcpp/create_channel.h>
+#include <grpcpp/security/credentials.h>

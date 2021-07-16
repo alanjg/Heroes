@@ -1,0 +1,28 @@
+{
+	"Name": "Cleric",
+	"Alias": "tier5",
+	"ModelName": "Cleric",
+
+	"MoveSpeed": 2.0,	
+
+	"Size": 0.8,
+
+	"AttackHitTime": 1.7,
+	"AttackDuration": 2.1,
+	"MeleeAttackName": "Attack00",
+
+	"AttackLeaveRange": 0.3,
+	"AttackValue": 5,
+	"DamageLow": 3,
+	"DamageHigh": 6,
+	
+	"HasRangedAttack": false,
+
+	"AttackedDuration": 1.6,
+	"DeathDuration": 2,
+
+	"AggroRange": 15,
+	
+	"DefenseValue": 3,
+	"HitPoints": 20
+}

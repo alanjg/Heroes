@@ -16,12 +16,12 @@ void EntityFactory::Register(const std::string& name, std::shared_ptr<EntityDefi
 	entities[name] = entity;
 }
 
-std::shared_ptr<EntityDefinition> EntityFactory::Lookup(const std::string& name)
+EntityDefinition* EntityFactory::Lookup(const std::string& name)
 {
 	auto ptr = entities.find(name);
 	if (ptr != entities.end())
 	{
-		return ptr->second;
+		return ptr->second.get();
 	}
 	else
 	{

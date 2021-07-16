@@ -2,14 +2,18 @@
 #include "Entity.h"
 #include "MeshInstance.h"
 #include "SkinnedMeshInstance.h"
+#include "StaticMeshInstance.h"
 #include "EntityAction.h"
-
+#include "WinMain.h"
+#include "Renderer.h"
+#include "Game.h"
 using namespace DirectX;
 
-Entity::Entity(EntityDefinition& definition): entityDefintition(definition)
+Entity::Entity()
 {	
 	walkSpeed = 4.0;
 	turnSpeed = 3.0;
+	idleAnimation = -1;
 }
 
 Entity::~Entity()
@@ -19,6 +23,10 @@ Entity::~Entity()
 void Entity::Render()
 {
 	m_mesh->RenderModel();
+	if (rangeAttackMesh != nullptr)
+	{
+		rangeAttackMesh->RenderModel();
+	}
 }
 
 void Entity::Initialize(float startX, float startY, float startOrientation, MeshInstance* m)
@@ -27,16 +35,40 @@ void Entity::Initialize(float startX, float startY, float startOrientation, Mesh
 	y = startY;
 	m_mesh = m;
 	m_skinnedMesh = dynamic_cast<SkinnedMeshInstance*>(m);
+	rangeAttackMesh = nullptr;
+	
 	orientation = startOrientation / 360 * (2*XM_PI);
 	walkProgress = 0;
 	idleProgress = 0.0;
+	attackedProgress = 0;
+	attackProgress = 0;
+	dieProgress = 0;
 	isTurning = false;
+	isAttacked = false;
 	isWalking = false;
 	isAttacking = false;
+	isDying = false;
+	isDead = false;
+	isRangeAttacking = false;
 }
 
 void Entity::Update(float elapsedTime)
 {
+	if (rangeAttackMesh != nullptr)
+	{
+		rangeAttackProgress += elapsedTime;
+		if (rangeAttackProgress < rangeAttackTotalTime)
+		{
+			rangeAttackX += rdx * elapsedTime;
+			rangeAttackY += rdy * elapsedTime;
+
+			XMMATRIX world = XMMatrixRotationX(-XM_PIDIV2) * XMMatrixRotationY(rangeAttackOrientation + XM_PIDIV2) * XMMatrixTranslation(-0.137041f, -1.8f, -1.06089f) * XMMatrixTranslation(rangeAttackX, 0, rangeAttackY);
+			XMFLOAT4X4 w;
+			XMStoreFloat4x4(&w, world);
+			rangeAttackMesh->SetTransform(w);
+		}
+	}
+
 	if (m_skinnedMesh == nullptr)
 	{
 		XMMATRIX world = XMMatrixRotationX(-XM_PIDIV2) * XMMatrixRotationY(orientation + XM_PIDIV2) * XMMatrixTranslation(-0.137041f, -1.8f, -1.06089f) * XMMatrixTranslation(x, 0, y);
@@ -56,6 +88,22 @@ void Entity::Update(float elapsedTime)
 		}
 
 		float remainingTime = elapsedTime;
+		if (isAttacking)
+		{
+			attackProgress += remainingTime;
+			remainingTime = 0;
+		}
+		else if (isAttacked)
+		{
+			attackedProgress += remainingTime;
+			remainingTime = 0;
+		}
+		else if (isDying)
+		{
+			dieProgress += remainingTime;
+			remainingTime = 0;
+		}
+
 		if (isTurning)
 		{
 			float remainingTurn = targetOrientation - orientation;
@@ -111,10 +159,7 @@ void Entity::Update(float elapsedTime)
 				remainingTime = 0;
 			}
 		}
-		if (isAttacking)
-		{
-			attackProgress += remainingTime;
-		}
+		
 		if (!isTurning && !isWalking && !isAttacking)
 		{
 			idleProgress += remainingTime;
@@ -132,6 +177,7 @@ void Entity::Update(float elapsedTime)
 			currentY = y;
 		}
 		XMMATRIX world = XMMatrixRotationX(-XM_PIDIV2) * XMMatrixRotationY(orientation + XM_PIDIV2) * XMMatrixTranslation(-0.137041f, -1.8f, -1.06089f) * XMMatrixTranslation(currentX, 0, currentY);
+		
 		XMFLOAT4X4 w;
 		XMStoreFloat4x4(&w, world);
 		m_skinnedMesh->SetTransform(w);
@@ -149,6 +195,14 @@ void Entity::Update(float elapsedTime)
 		{
 			t = attackProgress;
 		}
+		else if (isAttacked)
+		{
+			t = attackedProgress;
+		}
+		else if (isDying)
+		{
+			t = dieProgress;
+		}
 		else
 		{
 			t = idleProgress;
@@ -161,13 +215,31 @@ void Entity::Update(float elapsedTime)
 		{
 			m_skinnedMesh->SetAnimation("attack00", t);
 		}
+		else if (isRangeAttacking)
+		{
+			m_skinnedMesh->SetAnimation("rangeattack", idleProgress);
+		}
+		else if (isAttacked)
+		{
+			m_skinnedMesh->SetAnimation("hit", t);
+		}
+		else if (isDying)
+		{
+			m_skinnedMesh->SetAnimation("death", t, false);
+		}
 		else
 		{
-			m_skinnedMesh->SetAnimation("idle00", t);
+			if (idleAnimation == -1)
+			{
+				m_skinnedMesh->SetAnimation("idle00", t);
+			}
+			else
+			{
+				m_skinnedMesh->SetAnimation(idleAnimation, t);
+			}
 		}
 	}
 }
-
 
 void Entity::WalkToPoint(float tx, float ty)
 {
@@ -217,11 +289,44 @@ void Entity::WalkToPoint(float tx, float ty)
 	}
 }
 
+
+void Entity::RangeAttack(float tx, float ty)
+{
+	if (rangeAttackMesh)
+	{
+		delete rangeAttackMesh;
+	}
+	isTurning = false;
+	isWalking = false;
+	isAttacking = false;
+	isAttacked = false;
+	isDying = false;
+	isDead = false;
+	isRangeAttacking = true;
+	rangeAttackX = x;
+	rangeAttackY = y;
+	rdx = tx - x;
+	rdy = ty - y;
+	
+	rangeAttackOrientation = orientation;
+	rangeAttackTotalTime = 1;
+	rangeAttackProgress = 0;
+	//float dist = sqrt(rdx * rdx + rdy * rdy);
+	rdx /= rangeAttackTotalTime;
+	rdy /= rangeAttackTotalTime;
+	rangeAttackMesh = g_renderer->CreateStaticMeshInstance("Archershot");
+	attackProgress = 0;
+}
+
 void Entity::Attack()
 {
+	//m_skinnedMesh->PlayAnimationSound("attack00");
 	isTurning = false;
 	isWalking = false;
 	isAttacking = true;
+	isAttacked = false;
+	isDying = false;
+	isDead = false;
 	attackProgress = 0;
 }
 
@@ -230,10 +335,38 @@ void Entity::Stop()
 	isTurning = false;
 	isWalking = false;
 	isAttacking = false;
+	isAttacked = false;
+	isDying = false;
+	isDead = false;
 	currentAction = nullptr;
+}
+
+void Entity::Die()
+{
+	isTurning = false;
+	isWalking = false;
+	isAttacking = false;
+	isAttacked = false;
+	isDying = true;
+	isDead = false;
+}
+
+void Entity::GetHit()
+{
+	isTurning = false;
+	isWalking = false;
+	isAttacking = false;
+	isAttacked = true;
+	isDying = false;
+	isDead = false;
 }
 
 bool Entity::CanMove()
 {
-	return std::find(entityDefintition.actions.begin(), entityDefintition.actions.end(), EntityMove) != entityDefintition.actions.end();
+	return canMove;
+}
+
+void Entity::NextIdleAnimation()
+{
+	idleAnimation++;
 }
