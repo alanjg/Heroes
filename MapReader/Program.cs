@@ -10,8 +10,8 @@ namespace XdbReader
 {
 	class Program
 	{
-		const string sourceFolder = @"G:\Code\HeroesAnimation\Heroes5Models\";
-		const string destFolder = @"G:\Code\HeroesAnimation\HeroesAnimations2\";
+		const string sourceFolder = @"d:\Code\HeroesAnimation\Heroes5Models\";
+		const string destFolder = @"d:\Code\HeroesAnimation\HeroesAnimations2\";
 		const string gr2converterLocation = @"C:\Users\alan_\Documents\GitHub\Heroes\Release\Gr2Converter.exe";
 
 		static string[] badShotModels = new string[] {

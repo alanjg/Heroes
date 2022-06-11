@@ -64,7 +64,7 @@ std::shared_ptr<InputManager> g_inputManager = nullptr;
 std::shared_ptr<SelectionManager> g_selectionMananger = nullptr;
 std::shared_ptr<ResourceManager> g_resourceManager = nullptr;
 std::shared_ptr<EntityDefinitionManager> g_entityDefinitionManager = nullptr;
-std::string g_modelDir = "g:\\code\\HeroesAnimation\\HeroesAnimations\\";
+std::string g_modelDir = "d:\\code\\HeroesAnimation\\HeroesAnimations\\";
 std::string g_dataDir = "C:\\Users\\alan_\\Documents\\GitHub\\Heroes\\data\\";
 
 NetworkClient* g_networkClient = nullptr;
@@ -363,7 +363,7 @@ void LoadAndInstantiate(const std::string& directory, float x, float y)
 void InitScene()
 {
 	//std::string directoryRoot = "c:\\HeroesAnimations\\";
-	//std::string directoryRoot = "g:\\Code\\HeroesAnimation\\HeroesAnimations\\";
+	//std::string directoryRoot = "d:\\Code\\HeroesAnimation\\HeroesAnimations\\";
 	std::string directoryRoot = g_modelDir;
 	std::string selection = directoryRoot + "ConvertedEffects\\ArmySelection";
 	g_renderer->LoadModel(selection);
