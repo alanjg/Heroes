@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -171,7 +171,7 @@
     <Copy SourceFiles="$(VCPKG_ROOT)\c-ares_x64-windows\debug\bin\cares.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\zlib_x64-windows\debug\bin\zlibd1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
   </Target>
-   <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Copy SourceFiles="$(VCPKG_ROOT)\openssl_x64-windows\bin\libcrypto-1_1-x64.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\openssl_x64-windows\bin\libssl-1_1-x64.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\protobuf_x64-windows\bin\libprotobuf.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
@@ -180,7 +180,7 @@
     <Copy SourceFiles="$(VCPKG_ROOT)\c-ares_x64-windows\bin\cares.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\zlib_x64-windows\bin\zlib1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
   </Target>
-    <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Copy SourceFiles="$(VCPKG_ROOT)\openssl_x86-windows\debug\bin\libcrypto-1_1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\openssl_x86-windows\debug\bin\libssl-1_1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\protobuf_x86-windows\debug\bin\libprotobufd.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
@@ -189,7 +189,7 @@
     <Copy SourceFiles="$(VCPKG_ROOT)\c-ares_x86-windows\debug\bin\cares.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\zlib_x86-windows\debug\bin\zlibd1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
   </Target>
-   <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <Target Name="AfterBuild" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Copy SourceFiles="$(VCPKG_ROOT)\openssl_x86-windows\bin\libcrypto-1_1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\openssl_x86-windows\bin\libssl-1_1.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
     <Copy SourceFiles="$(VCPKG_ROOT)\protobuf_x86-windows\bin\libprotobuf.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
